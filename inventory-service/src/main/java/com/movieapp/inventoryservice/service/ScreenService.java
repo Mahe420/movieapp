@@ -1,0 +1,21 @@
+package com.movieapp.inventoryservice.service;
+
+import java.util.List;
+
+import com.movieapp.inventoryservice.entity.Screen;
+import com.movieapp.inventoryservice.exception.ScreenNotFoundException;
+import com.movieapp.inventoryservice.exception.ServiceException;
+
+public interface ScreenService {
+
+	Screen addScreen(Screen screen) throws ServiceException;
+
+	List<Screen> getAllScreen() throws ScreenNotFoundException;
+
+	Screen updateScreen(Screen screen) throws ServiceException;
+
+	void deleteScreen(int screenId) throws ServiceException;
+
+	Screen getScreenById(int screenId) throws ScreenNotFoundException;
+
+}

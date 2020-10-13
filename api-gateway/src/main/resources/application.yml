@@ -1,0 +1,30 @@
+server:
+  port: 8765
+  
+spring:
+  application:
+    name: api-gateway
+    
+zuul:
+  sensitiveHeaders:
+  routes:
+    booking-service:
+      path: /booking-service/**
+      serviceId: BOOKING-SERVICE
+    inventory-service:
+      path: /inventory-service/**
+      serviceId: INVENTORY-SERVICE
+    user-service:
+      path: /user-service/**
+      serviceId: USER-SERVICE
+    search-service:
+      path: /search-service/**
+      serviceId: SEARCH-SERVICE	
+ 
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

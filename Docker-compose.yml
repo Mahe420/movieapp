@@ -1,0 +1,149 @@
+version: '3.8'
+services:
+
+  eureka:
+    container_name: eureka
+    build: ./eureka
+    image: eureka
+    ports:
+      - "8761:8761"
+    networks: 
+      - main-network
+    
+  # api-gateway:
+  #   container_name: api-gateway
+  #   build: ./api-gateway
+  #   image: api-gateway
+  #   ports:
+  #     - "8765:8765"
+  #   depends_on:
+  #     - eureka
+  #   environment: 
+  #     EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+  #   networks:
+  #     - main-network
+
+  # user-service:
+  #   container_name: user-service
+  #   build: ./user-service
+  #   image: user-service
+  #   ports:
+  #     - "8081:8081"
+  #   depends_on:
+  #     - eureka
+  #     - mysqldb
+  #   environment: 
+  #     SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/movieapp?useSSL=true
+  #     SPRING_DATASOURCE_USERNAME: root
+  #     SPRING_DATASOURCE_PASSWORD: root
+  #     EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+  #     AUTH_LINK: http://user-service:8081/oauth/token
+  #   networks: 
+  #     - main-network
+      
+  # inventory-service:
+  #   container_name: inventory-service
+  #   build: ./inventory-service
+  #   image: inventory-service
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - eureka
+  #     - mysqldb     
+  #   environment: 
+  #     SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/movieapp?useSSL=true
+  #     SPRING_DATASOURCE_USERNAME: root
+  #     SPRING_DATASOURCE_PASSWORD: root
+  #     EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+  #     AUTH_LINK: http://user-service:8081/oauth/token
+  #     SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI:  http://user-service:8081/oauth/check_token
+  #   networks: 
+  #     - main-network                      
+    
+  booking-service:
+    container_name: booking-service
+    build: ./booking-service
+    image: booking-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - eureka
+      - mysqldb
+      - kafka     
+    environment: 
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/movieapp?useSSL=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+      KAFKA_BOOTSTRAPADDRESS: kafka:9092
+      AUTH_LINK: http://user-service:8081/oauth/token
+      SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI:  http://user-service:8081/oauth/check_token
+    networks: 
+      - main-network    
+
+  notification-service:
+    container_name: notification-service
+    build: ./notification-service
+    image: notification-service
+    ports:
+      - "8083:8083"
+    depends_on: 
+      - eureka
+      - kafka
+    environment: 
+      KAFKA_BOOTSTRAPADDRESS: kafka:9092
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+    networks: 
+      - main-network    
+
+  mysqldb:
+    image: mysql:latest
+    container_name: mysqldb
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: movieapp    
+    volumes:
+      - db_data:/var/lib/mysql
+    networks: 
+      - main-network
+  
+  zookeeper:
+    image: 'docker.io/bitnami/zookeeper:latest'
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    volumes: 
+      - "zookeeper_data:/bitnami"
+    environment: 
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    networks: 
+      - main-network  
+
+  kafka:
+    image: 'docker.io/bitnami/kafka:latest'
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    volumes: 
+      - "kafka_data:/bitnami"
+    environment: 
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes    
+    depends_on: 
+      - zookeeper
+    networks: 
+      - main-network    
+
+volumes:
+  db_data:
+    driver: local
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local
+
+networks:
+    main-network:
+        driver: bridge  
