@@ -10,55 +10,55 @@ services:
     networks: 
       - main-network
     
-  # api-gateway:
-  #   container_name: api-gateway
-  #   build: ./api-gateway
-  #   image: api-gateway
-  #   ports:
-  #     - "8765:8765"
-  #   depends_on:
-  #     - eureka
-  #   environment: 
-  #     EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
-  #   networks:
-  #     - main-network
+  api-gateway:
+    container_name: api-gateway
+    build: ./api-gateway
+    image: api-gateway
+    ports:
+      - "8765:8765"
+    depends_on:
+      - eureka
+    environment: 
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+    networks:
+      - main-network
 
-  # user-service:
-  #   container_name: user-service
-  #   build: ./user-service
-  #   image: user-service
-  #   ports:
-  #     - "8081:8081"
-  #   depends_on:
-  #     - eureka
-  #     - mysqldb
-  #   environment: 
-  #     SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/movieapp?useSSL=true
-  #     SPRING_DATASOURCE_USERNAME: root
-  #     SPRING_DATASOURCE_PASSWORD: root
-  #     EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
-  #     AUTH_LINK: http://user-service:8081/oauth/token
-  #   networks: 
-  #     - main-network
+  user-service:
+    container_name: user-service
+    build: ./user-service
+    image: user-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - eureka
+      - mysqldb
+    environment: 
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/movieapp?useSSL=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+      AUTH_LINK: http://tfojo11568dns.eastus2.cloudapp.azure.com:8081/oauth/token
+    networks: 
+      - main-network
       
-  # inventory-service:
-  #   container_name: inventory-service
-  #   build: ./inventory-service
-  #   image: inventory-service
-  #   ports:
-  #     - "8080:8080"
-  #   depends_on:
-  #     - eureka
-  #     - mysqldb     
-  #   environment: 
-  #     SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/movieapp?useSSL=true
-  #     SPRING_DATASOURCE_USERNAME: root
-  #     SPRING_DATASOURCE_PASSWORD: root
-  #     EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
-  #     AUTH_LINK: http://user-service:8081/oauth/token
-  #     SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI:  http://user-service:8081/oauth/check_token
-  #   networks: 
-  #     - main-network                      
+  inventory-service:
+    container_name: inventory-service
+    build: ./inventory-service
+    image: inventory-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka
+      - mysqldb     
+    environment: 
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/movieapp?useSSL=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+      AUTH_LINK: http://tfojo11568dns.eastus2.cloudapp.azure.com:8081/oauth/token
+      SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI:  http://tfojo11568dns.eastus2.cloudapp.azure.com:8081/oauth/check_token
+    networks: 
+      - main-network                      
     
   booking-service:
     container_name: booking-service
@@ -76,8 +76,8 @@ services:
       SPRING_DATASOURCE_PASSWORD: root
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
       KAFKA_BOOTSTRAPADDRESS: kafka:9092
-      AUTH_LINK: http://user-service:8081/oauth/token
-      SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI:  http://user-service:8081/oauth/check_token
+      AUTH_LINK: http://tfojo11568dns.eastus2.cloudapp.azure.com:8081/oauth/token
+      SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI:  http://tfojo11568dns.eastus2.cloudapp.azure.com:8081/oauth/check_token
     networks: 
       - main-network    
 

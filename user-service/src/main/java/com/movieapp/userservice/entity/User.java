@@ -34,6 +34,9 @@ public class User implements Serializable {
 		this.userName = userName;
 		this.password = password;
 		this.role = role;
+		this.accountNonExpired = true;
+		this.credentialsNonExpired = true;
+		this.accountNonLocked = true;
 	}
 	
 	
