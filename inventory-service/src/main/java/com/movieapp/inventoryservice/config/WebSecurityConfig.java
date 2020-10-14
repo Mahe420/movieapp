@@ -17,6 +17,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/configuration/security",
                 "/swagger-ui.html",
                 "/webjars/**")
-		.antMatchers(HttpMethod.GET, "/play/");
+		.antMatchers(HttpMethod.GET, "/play");
 	}
 }
