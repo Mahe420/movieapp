@@ -16,6 +16,7 @@ services:
     image: api-gateway
     ports:
       - "8765:8765"
+    restart: always
     depends_on:
       - eureka
     environment: 
@@ -32,12 +33,13 @@ services:
     depends_on:
       - eureka
       - mysqldb
+    restart: always
     environment: 
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/movieapp?useSSL=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
-      AUTH_LINK: http://user-service:8081/oauth/token
+      AUTH_LINK: http://tfojo11568dns.eastus2.cloudapp.azure.com:8081/oauth/token
     networks: 
       - main-network
       
@@ -49,14 +51,15 @@ services:
       - "8080:8080"
     depends_on:
       - eureka
-      - mysqldb     
+      - mysqldb
+    restart: always     
     environment: 
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/movieapp?useSSL=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
-      AUTH_LINK: http://user-service:8081/oauth/token
-      SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI:  http://localhost:8081/oauth/check_token
+      AUTH_LINK: http://tfojo11568dns.eastus2.cloudapp.azure.com:8081/oauth/token
+      SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI:  http://user-service:8081/oauth/check_token
     networks: 
       - main-network                      
     
@@ -66,35 +69,36 @@ services:
     image: booking-service
     ports:
       - "8082:8082"
+    restart: always
     depends_on:
       - eureka
       - mysqldb
-      - kafka     
+      # - kafka     
     environment: 
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/movieapp?useSSL=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
       KAFKA_BOOTSTRAPADDRESS: kafka:9092
-      AUTH_LINK: http://user-service:8081/oauth/token
-      SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI:  http://localhost:8081/oauth/check_token
+      AUTH_LINK: http://tfojo11568dns.eastus2.cloudapp.azure.com:8081/oauth/token
+      SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI:  http://user-service:8081/oauth/check_token
     networks: 
       - main-network    
 
-  notification-service:
-    container_name: notification-service
-    build: ./notification-service
-    image: notification-service
-    ports:
-      - "8083:8083"
-    depends_on: 
-      - eureka
-      - kafka
-    environment: 
-      KAFKA_BOOTSTRAPADDRESS: kafka:9092
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
-    networks: 
-      - main-network
+  # notification-service:
+  #   container_name: notification-service
+  #   build: ./notification-service
+  #   image: notification-service
+  #   ports:
+  #     - "8083:8083"
+  #   depends_on: 
+  #     - eureka
+  #     - kafka
+  #   environment: 
+  #     KAFKA_BOOTSTRAPADDRESS: kafka:9092
+  #     EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+  #   networks: 
+  #     - main-network
 
   movie-search:
     container_name: movie-search
@@ -120,7 +124,7 @@ services:
     image: mysql:latest
     container_name: mysqldb
     ports:
-      - "3307:3306"
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: movieapp    
@@ -129,32 +133,32 @@ services:
     networks: 
       - main-network
   
-  zookeeper:
-    image: 'docker.io/bitnami/zookeeper:latest'
-    container_name: zookeeper
-    ports:
-      - "2181:2181"
-    volumes: 
-      - "zookeeper_data:/bitnami"
-    environment: 
-      - ALLOW_ANONYMOUS_LOGIN=yes
-    networks: 
-      - main-network  
+  # zookeeper:
+  #   image: 'docker.io/bitnami/zookeeper:latest'
+  #   container_name: zookeeper
+  #   ports:
+  #     - "2181:2181"
+  #   volumes: 
+  #     - "zookeeper_data:/bitnami"
+  #   environment: 
+  #     - ALLOW_ANONYMOUS_LOGIN=yes
+  #   networks: 
+  #     - main-network  
 
-  kafka:
-    image: 'docker.io/bitnami/kafka:latest'
-    container_name: kafka
-    ports:
-      - "9092:9092"
-    volumes: 
-      - "kafka_data:/bitnami"
-    environment: 
-      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
-      - ALLOW_PLAINTEXT_LISTENER=yes    
-    depends_on: 
-      - zookeeper
-    networks: 
-      - main-network    
+  # kafka:
+  #   image: 'docker.io/bitnami/kafka:latest'
+  #   container_name: kafka
+  #   ports:
+  #     - "9092:9092"
+  #   volumes: 
+  #     - "kafka_data:/bitnami"
+  #   environment: 
+  #     - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+  #     - ALLOW_PLAINTEXT_LISTENER=yes    
+  #   depends_on: 
+  #     - zookeeper
+  #   networks: 
+  #     - main-network    
   
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.2.1
@@ -179,7 +183,7 @@ services:
       - "5044:5044"
     restart: unless-stopped
     volumes:
-      - ./etc/logstash/pipeline:/usr/share/logstash/pipeline:ro
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
     depends_on:
       - elasticsearch
     networks:
