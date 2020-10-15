@@ -33,6 +33,7 @@ services:
     depends_on:
       - eureka
       - mysqldb
+      - logstash
     restart: always
     environment: 
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/movieapp?useSSL=true
@@ -40,6 +41,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: root
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
       AUTH_LINK: http://tfojo11568dns.eastus2.cloudapp.azure.com:8081/oauth/token
+      LOGSTASH_HOST: logstash
     networks: 
       - main-network
       
@@ -52,6 +54,7 @@ services:
     depends_on:
       - eureka
       - mysqldb
+      - logstash
     restart: always     
     environment: 
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/movieapp?useSSL=true
@@ -60,6 +63,7 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
       AUTH_LINK: http://tfojo11568dns.eastus2.cloudapp.azure.com:8081/oauth/token
       SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI:  http://user-service:8081/oauth/check_token
+      LOGSTASH_HOST: logstash
     networks: 
       - main-network                      
     
@@ -73,6 +77,7 @@ services:
     depends_on:
       - eureka
       - mysqldb
+      - logstash
       # - kafka     
     environment: 
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/movieapp?useSSL=true
@@ -82,6 +87,7 @@ services:
       KAFKA_BOOTSTRAPADDRESS: kafka:9092
       AUTH_LINK: http://tfojo11568dns.eastus2.cloudapp.azure.com:8081/oauth/token
       SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI:  http://user-service:8081/oauth/check_token
+      LOGSTASH_HOST: logstash
     networks: 
       - main-network    
 
@@ -109,12 +115,14 @@ services:
     depends_on: 
       - eureka
       - elasticsearch
+      - logstash
     environment: 
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
       AUTH_LINK: http://user-service:8081/oauth/token
       PLAY_URL: http://inventory-service:8080/play
       SPRING_DATA_ELASTICSEARCH_CLUSTER-NODES: elasticsearch:9300
       SPRING_DATA_ELASTICSEARCH_CLUSTER-NAME: elasticsearch
+      LOGSTASH_HOST: logstash
     restart: always
     networks:
       main-network:
