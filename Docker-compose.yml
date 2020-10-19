@@ -10,19 +10,19 @@ services:
     networks: 
       - main-network
     
-  api-gateway:
-    container_name: api-gateway
-    build: ./api-gateway
-    image: api-gateway
-    ports:
-      - "8765:8765"
-    restart: always
-    depends_on:
-      - eureka
-    environment: 
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
-    networks:
-      - main-network
+  # api-gateway:
+  #   container_name: api-gateway
+  #   build: ./api-gateway
+  #   image: api-gateway
+  #   ports:
+  #     - "8765:8765"
+  #   restart: always
+  #   depends_on:
+  #     - eureka
+  #   environment: 
+  #     EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+  #   networks:
+  #     - main-network
 
   user-service:
     container_name: user-service
@@ -41,7 +41,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: root
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
       AUTH_LINK: http://tfojo11568dns.eastus2.cloudapp.azure.com:8081/oauth/token
-      LOGSTASH_HOST: logstash
+      LOGSTASH_HOST: tfojo11568dns.eastus2.cloudapp.azure.com
     networks: 
       - main-network
       
@@ -63,33 +63,33 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
       AUTH_LINK: http://tfojo11568dns.eastus2.cloudapp.azure.com:8081/oauth/token
       SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI:  http://user-service:8081/oauth/check_token
-      LOGSTASH_HOST: logstash
+      LOGSTASH_HOST: tfojo11568dns.eastus2.cloudapp.azure.com
     networks: 
       - main-network                      
     
-  booking-service:
-    container_name: booking-service
-    build: ./booking-service
-    image: booking-service
-    ports:
-      - "8082:8082"
-    restart: always
-    depends_on:
-      - eureka
-      - mysqldb
-      - logstash
-      # - kafka     
-    environment: 
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/movieapp?useSSL=true
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
-      KAFKA_BOOTSTRAPADDRESS: kafka:9092
-      AUTH_LINK: http://tfojo11568dns.eastus2.cloudapp.azure.com:8081/oauth/token
-      SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI:  http://user-service:8081/oauth/check_token
-      LOGSTASH_HOST: logstash
-    networks: 
-      - main-network    
+  # booking-service:
+  #   container_name: booking-service
+  #   build: ./booking-service
+  #   image: booking-service
+  #   ports:
+  #     - "8082:8082"
+  #   restart: always
+  #   depends_on:
+  #     - eureka
+  #     - mysqldb
+  #     - logstash
+  #     # - kafka     
+  #   environment: 
+  #     SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/movieapp?useSSL=true
+  #     SPRING_DATASOURCE_USERNAME: root
+  #     SPRING_DATASOURCE_PASSWORD: root
+  #     EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+  #     KAFKA_BOOTSTRAPADDRESS: kafka:9092
+  #     AUTH_LINK: http://tfojo11568dns.eastus2.cloudapp.azure.com:8081/oauth/token
+  #     SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI:  http://user-service:8081/oauth/check_token
+  #     LOGSTASH_HOST: tfojo11568dns.eastus2.cloudapp.azure.com
+  #   networks: 
+  #     - main-network    
 
   # notification-service:
   #   container_name: notification-service
