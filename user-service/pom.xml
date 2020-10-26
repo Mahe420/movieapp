@@ -22,6 +22,11 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sonar.exclusions>**/dto/*,**/entity/*</sonar.exclusions>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+		<sonar.language>java</sonar.language>
+
 	</properties>
 
 
@@ -79,20 +84,14 @@
 			<version>2.9.2</version>
 		</dependency>
 		<dependency>
-  <groupId>net.logstash.logback</groupId>
-  <artifactId>logstash-logback-encoder</artifactId>
-  <version>6.3</version>
-</dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>6.3</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 	</dependencies>
 	<build>
@@ -160,9 +159,6 @@
 					<formats>
 						<format>html</format>
 						<format>xml</format>
-
-
-
 					</formats>
 				</configuration>
 			</plugin>
