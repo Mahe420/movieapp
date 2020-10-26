@@ -54,7 +54,7 @@ public class KafkaConsumer {
 	}
 
 	public static void checkStatus(APISuccessResponseDTO response) throws Exception {
-		if (response.getStatusCode() != 202) {
+		if (response.getStatusCode() != 200) {
 			throw new Exception("Error in calling service message:" + response.getBody());
 		}
 	}
