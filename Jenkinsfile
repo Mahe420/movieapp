@@ -4,7 +4,7 @@ pipeline {
     stage('DockerComposeBuilder') {
       agent any
       steps {
-        sh 'sudo docker-compose up -d'
+        sh 'sudo /usr/local/bin/docker-compose up -d'
       }
     }
   }
