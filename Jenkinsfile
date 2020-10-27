@@ -1,7 +1,7 @@
 pipeline {
   agent none
   stages {
-    stage('Docker Build') {
+    stage('DockerComposeBuilder') {
       agent any
       steps {
         sh 'sudo docker-compose up -d'
