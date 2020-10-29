@@ -1,10 +1,16 @@
 package com.movieapp.userservice.dto;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 
-public class UserDTO {
+public class UserDTO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
 	@Pattern(regexp="^[a-zA-Z]{1,30}+$", message="Invalid FirstName")
 	@NotNull

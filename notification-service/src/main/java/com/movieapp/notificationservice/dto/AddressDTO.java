@@ -1,6 +1,12 @@
 package com.movieapp.notificationservice.dto;
 
-public class AddressDTO {
+import java.io.Serializable;
+
+public class AddressDTO implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private String flatNo;
 	private String street;

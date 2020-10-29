@@ -1,9 +1,14 @@
 package com.movieapp.notificationservice.dto;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class CastDTO {
+public class CastDTO implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
     private String name;
     private String roll;

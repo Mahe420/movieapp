@@ -1,6 +1,12 @@
 package com.movieapp.bookingservice.dto;
 
-public class BookingDTO {
+import java.io.Serializable;
+
+public class BookingDTO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2907956949418211729L;
 	private int id;
 	private double totalPrice;
 	private int noOfBookedSeats;

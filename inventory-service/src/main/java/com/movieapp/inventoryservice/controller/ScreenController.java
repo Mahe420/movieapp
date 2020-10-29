@@ -27,6 +27,8 @@ import com.movieapp.inventoryservice.service.ScreenService;
 public class ScreenController {
 
 	public static final String MESSAGE = "message";
+
+	public static final int HTTP_STATUS_OK=200;
 	@Autowired
 	ScreenService screenService;
 
@@ -36,11 +38,9 @@ public class ScreenController {
 	public ResponseEntity<APISuccessResponseDTO> addScreen(@RequestBody Screen screen) throws ServiceException {
 		logger.info("Add screen");
 		Screen screenDetails = screenService.addScreen(screen);
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Screen Added Successfull");
-		response.setBody(screenDetails);
+		
+		APISuccessResponseDTO response = createResponse(screenDetails, "Screen Added Successfull");
+		
 		logger.info("Screen added");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);
@@ -50,11 +50,7 @@ public class ScreenController {
 	public ResponseEntity<APISuccessResponseDTO> getAllScreen() throws ScreenNotFoundException {
 		logger.info("Get all screens");
 		List<Screen> screenList = screenService.getAllScreen();
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Get all Screens Successfull");
-		response.setBody(screenList);
+		APISuccessResponseDTO response = createResponse(screenList, "Get all Screens Successfull");
 		logger.info("Retrieved all screens");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);
@@ -65,11 +61,7 @@ public class ScreenController {
 			throws ScreenNotFoundException {
 		logger.info("Get screen by id");
 		Screen screen = screenService.getScreenById(screenId);
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Get Screen by Id Successfull");
-		response.setBody(screen);
+		APISuccessResponseDTO response = createResponse(screen, "Get Screens by ID Successfull");
 		logger.info("Got screen by id");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);
@@ -79,11 +71,7 @@ public class ScreenController {
 	public ResponseEntity<APISuccessResponseDTO> updateScreen(@RequestBody Screen screen) throws ServiceException {
 		logger.info("Update screen details");
 		Screen screenDetails = screenService.updateScreen(screen);
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Screen Updated Successfull");
-		response.setBody(screenDetails);
+		APISuccessResponseDTO response = createResponse(screenDetails, "Update Screens Successfull");
 		logger.info("Screen detaisl updated");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);
@@ -93,14 +81,18 @@ public class ScreenController {
 	public ResponseEntity<APISuccessResponseDTO> deleteScreen(@PathVariable int screenId) throws ServiceException {
 		logger.info("delete screen by id");
 		screenService.deleteScreen(screenId);
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Screen Deleted Successfull");
-		response.setBody(null);
+		APISuccessResponseDTO response = createResponse(null,"Delete screen Successfull");
 		logger.info("screen by id deleted");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);
 	}
 
+	private APISuccessResponseDTO createResponse(Object object,String message) {
+		APISuccessResponseDTO response = new APISuccessResponseDTO();
+		response.setHttpStatus(HttpStatus.ACCEPTED);
+		response.setStatusCode(HTTP_STATUS_OK);
+		response.setMessage(message);
+		response.setBody(object);
+		return response;
+	}
 }

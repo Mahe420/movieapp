@@ -17,6 +17,7 @@ import com.movieapp.moviesearch.dto.APISuccessResponseDTO;
 @CrossOrigin
 @RequestMapping("/search")
 public class SearchController {
+	public static final int HTTP_STATUS_OK=200;
 	
 	@Autowired
     private SearchBuilder searchBuilder;
@@ -26,7 +27,7 @@ public class SearchController {
     	
     	APISuccessResponseDTO response = new APISuccessResponseDTO();
     	response.setHttpStatus(HttpStatus.ACCEPTED);
-    	response.setStatusCode(200);
+    	response.setStatusCode(HTTP_STATUS_OK);
     	response.setMessage("Sucessfully Fetched Data");
     	response.setBody(searchBuilder.getAll(searchText));
     	

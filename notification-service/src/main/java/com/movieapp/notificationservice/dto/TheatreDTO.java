@@ -1,7 +1,13 @@
 package com.movieapp.notificationservice.dto;
 
-public class TheatreDTO {
+import java.io.Serializable;
 
+public class TheatreDTO  implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private String name;
 	private LocationDTO location;

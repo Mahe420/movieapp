@@ -1,8 +1,14 @@
 package com.movieapp.bookingservice.dto;
 
+import java.io.Serializable;
+
 import org.springframework.http.HttpStatus;
 
-public class APIErrorResponseDTO {
+public class APIErrorResponseDTO implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private HttpStatus httpStatus;
 	private int statusCode;
 	private String message;

@@ -27,6 +27,8 @@ import com.movieapp.inventoryservice.service.TheatreService;
 public class TheatreController {
 	
 	public static final String MESSAGE="message";
+
+	public static final int HTTP_STATUS_OK=200;
 	@Autowired
 	TheatreService theatreService;
 	
@@ -37,11 +39,7 @@ public class TheatreController {
 	{
 		logger.info("Add theatre");
 		Theatre theatreDetails=theatreService.addTheatre(theatre);
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Theatre Added Successfull");
-		response.setBody(theatreDetails);
+		APISuccessResponseDTO response = createResponse(theatreDetails, "Theatre Added Successfull");
 		logger.info("Theatre added");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED)).body(response);	
 	}
@@ -50,11 +48,7 @@ public class TheatreController {
 	public ResponseEntity<APISuccessResponseDTO> getAllTheatre() throws TheatreNotFoundException {
 		logger.info("Get all theatre values");
 		List<Theatre> theatreList =theatreService.getAlltheatre();
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Get all Theatre Successfull");
-		response.setBody(theatreList);
+		APISuccessResponseDTO response = createResponse(theatreList, "Get all Theatre Successfull");
 		logger.info("All theatre values retrieved");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED)).body(response);
 	}
@@ -63,11 +57,7 @@ public class TheatreController {
 	public ResponseEntity<APISuccessResponseDTO> getTheatreById(@PathVariable int theatreId) throws TheatreNotFoundException {
 		logger.info("Get theatre by id");
 		Theatre theatre=theatreService.getTheatreById(theatreId);
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Get Theatre by Id Successfull");
-		response.setBody(theatre);
+		APISuccessResponseDTO response = createResponse(theatre, "Get Theatre by Id Successfull");
 		logger.info("theatre by id retrieved");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED)).body(response);
 	}
@@ -77,11 +67,7 @@ public class TheatreController {
 	{
 		logger.info("Update theatre details");
 		Theatre theatreDetails=theatreService.updateTheatre(theatre);
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Theatre Updated Successfull");
-		response.setBody(theatreDetails);
+		APISuccessResponseDTO response = createResponse(theatreDetails, "Theatre Updated Successfull");
 		logger.info("Theatre details updated");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED)).body(response);	
 	}
@@ -91,12 +77,19 @@ public class TheatreController {
 	{
 		logger.info("Delete theatre by id");
 		theatreService.deleteTheatre(theatreId);
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Theatre Deleted Successfull");
-		response.setBody(null);
+		
+		APISuccessResponseDTO response = createResponse(null, "Theatre Deleted Successfull");
+		
 		logger.info("theatre by id deleted");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED)).body(response);
+	}
+	
+	private APISuccessResponseDTO createResponse(Object object,String message) {
+		APISuccessResponseDTO response = new APISuccessResponseDTO();
+		response.setHttpStatus(HttpStatus.ACCEPTED);
+		response.setStatusCode(HTTP_STATUS_OK);
+		response.setMessage(message);
+		response.setBody(object);
+		return response;
 	}
 }

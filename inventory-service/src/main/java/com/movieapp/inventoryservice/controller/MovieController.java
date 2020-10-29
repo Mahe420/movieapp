@@ -28,6 +28,7 @@ public class MovieController {
 
 	public static final String MESSAGE = "message";
 
+	public static final int HTTP_STATUS_OK=200;
 	@Autowired
 	MovieService movieService;
 
@@ -37,11 +38,7 @@ public class MovieController {
 	public ResponseEntity<APISuccessResponseDTO> addMovie(@RequestBody Movie movie) throws ServiceException {
 		logger.info("Entered to insert a movie");
 		Movie movieDetails = movieService.addMovie(movie);
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Movie Saved Successfull");
-		response.setBody(movieDetails);
+		APISuccessResponseDTO response = createResponse(movieDetails, "Movie Saved Successfull");
 		logger.info("Successfully added movie");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);
@@ -51,11 +48,7 @@ public class MovieController {
 	public ResponseEntity<APISuccessResponseDTO> getAllMovies() throws MovieNotFoundException {
 		logger.info("To get all movies");
 		List<Movie> movieList = movieService.getAllMovies();
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Get all Movie Successfull");
-		response.setBody(movieList);
+		APISuccessResponseDTO response = createResponse(movieList, "Get all Movie Successfull");
 		logger.info("Successfully retrieved all movies");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);
@@ -65,11 +58,7 @@ public class MovieController {
 	public ResponseEntity<APISuccessResponseDTO> getMovieById(@PathVariable int movieId) throws ServiceException {
 		logger.info("To get movie by id");
 		Movie movie = movieService.getMovieById(movieId);
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Get Movie by Id Successfull");
-		response.setBody(movie);
+		APISuccessResponseDTO response = createResponse(movie, "Get Movie by Id Successfull");
 		logger.info("Got movie by id");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);
@@ -79,11 +68,7 @@ public class MovieController {
 	public ResponseEntity<APISuccessResponseDTO> updateMovie(@RequestBody Movie movie) throws ServiceException {
 		logger.info("Update movie details");
 		Movie movieDetails = movieService.updateMovie(movie);
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Movie Updated Successfull");
-		response.setBody(movieDetails);
+		APISuccessResponseDTO response = createResponse(movieDetails, "Get Movie by Id Successfull");
 		logger.info("Movie details updated");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);
@@ -93,13 +78,18 @@ public class MovieController {
 	public ResponseEntity<APISuccessResponseDTO> deleteMovie(@PathVariable int movieId) throws ServiceException {
 		logger.info("Delete movie by id");
 		movieService.deleteMovie(movieId);
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Movie Deleted Successfull");
-		response.setBody(null);
+		APISuccessResponseDTO response = createResponse(null,"Get Movie by Id Successfull");
 		logger.info("deleted movie");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);
+	}
+	
+	private APISuccessResponseDTO createResponse(Object object,String message) {
+		APISuccessResponseDTO response = new APISuccessResponseDTO();
+		response.setHttpStatus(HttpStatus.ACCEPTED);
+		response.setStatusCode(HTTP_STATUS_OK);
+		response.setMessage(message);
+		response.setBody(object);
+		return response;
 	}
 }

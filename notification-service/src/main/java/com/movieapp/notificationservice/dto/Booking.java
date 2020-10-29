@@ -1,6 +1,8 @@
 package com.movieapp.notificationservice.dto;
 
-public class Booking  {
+import java.io.Serializable;
+
+public class Booking  implements Serializable{
 	/**
 	 * 
 	 */

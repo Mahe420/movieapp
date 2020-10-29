@@ -31,6 +31,7 @@ import com.movieapp.bookingservice.service.BookingService;
 public class BookingController {
 	
 	public static final String MESSAGE="message";
+	public static final int HTTP_STATUS_OK=200;
 	@Autowired
 	BookingService bookingService;
 	
@@ -41,11 +42,9 @@ public class BookingController {
 	{
 		logger.info("Entered to add booking");
 		Booking bookingDetails=bookingService.addBooking(booking);
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Booking Saved Successfull");
-		response.setBody(bookingDetails);
+		
+		APISuccessResponseDTO response = createResponse(bookingDetails, "Booking Saved Successfull");
+		
 		logger.info("Successfully added booking");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);
@@ -56,11 +55,7 @@ public class BookingController {
 		
 		logger.info("Entered to Get all the booking details");
 		List<BookingDTO> bookingDTOList = bookingService.getAllBooking();
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Get all Booking Successfull");
-		response.setBody(bookingDTOList);
+		APISuccessResponseDTO response = createResponse(bookingDTOList, "Get Booking by Id Successfull");
 		logger.info("Successfully retrieved booking details");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);
@@ -71,11 +66,9 @@ public class BookingController {
 		
 		logger.info("Entered to get booking by id");
 		BookingDTO bookingDTO = bookingService.getBookingById(bookingId);
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Get Booking by Id Successfull");
-		response.setBody(bookingDTO);
+		
+		APISuccessResponseDTO response = createResponse(bookingDTO, "Get Booking by Id Successfull");
+		
 		logger.info("Successfully found booking by id");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);
@@ -86,14 +79,21 @@ public class BookingController {
 	public ResponseEntity<APISuccessResponseDTO> deleteBooking(@PathVariable int bookingId) throws ServiceException {
 		logger.info("Entered to delete booking ");
 		bookingService.deleteBooking(bookingId);
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Booking Deleted Successfull");
-		response.setBody(null);
+		
+		APISuccessResponseDTO response = createResponse(null, "Booking Deleted Successfull");
+		
 		logger.info("Successfully deleted booking");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);
+	}
+	
+	private APISuccessResponseDTO createResponse(Object object,String message) {
+		APISuccessResponseDTO response = new APISuccessResponseDTO();
+		response.setHttpStatus(HttpStatus.ACCEPTED);
+		response.setStatusCode(HTTP_STATUS_OK);
+		response.setMessage(message);
+		response.setBody(object);
+		return response;
 	}
 	
 

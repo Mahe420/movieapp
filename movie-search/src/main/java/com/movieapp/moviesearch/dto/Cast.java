@@ -1,8 +1,13 @@
 package com.movieapp.moviesearch.dto;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class Cast {
+public class Cast implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
     private String name;
     private String roll;

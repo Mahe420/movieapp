@@ -1,6 +1,12 @@
 package com.movieapp.moviesearch.dto;
 
-public class Play {
+import java.io.Serializable;
+
+public class Play implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
     private String startTiming;
     private  String endTiming;

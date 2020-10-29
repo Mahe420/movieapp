@@ -1,6 +1,12 @@
 package com.movieapp.bookingservice.dto;
 
-public class LocationDTO {
+import java.io.Serializable;
+
+public class LocationDTO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private String latitude;
 	private String longitude;

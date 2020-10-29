@@ -1,7 +1,13 @@
 package com.movieapp.notificationservice.dto;
 
-public class PlayDTO {
+import java.io.Serializable;
 
+public class PlayDTO implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
     private String startTiming;
     private  String endTiming;

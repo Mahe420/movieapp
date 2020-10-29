@@ -1,11 +1,16 @@
 package com.movieapp.notificationservice.dto;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
 
-public class MovieDTO {
+public class MovieDTO implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private String name;
 	private String title;

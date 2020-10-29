@@ -1,7 +1,13 @@
 package com.movieapp.bookingservice.dto;
 
-public class TheatreDTO {
+import java.io.Serializable;
 
+public class TheatreDTO implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5094748821536273656L;
 	private int id;
 	private String name;
 	private LocationDTO location;

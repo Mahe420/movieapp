@@ -11,20 +11,22 @@ import com.movieapp.userservice.exception.ApplicationException;
 
 @RestControllerAdvice
 public class ErrorHandler {
+	public static final int HTTP_STATUS_NOT_FOUND=400;
 	@ExceptionHandler(value= {ApplicationException.class})
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ResponseEntity<Object> handleException(ApplicationException e)
 	{
 		APIErrorResponseDTO apiError = new APIErrorResponseDTO(HttpStatus.NOT_FOUND,
-				404, e.getMessage());
+				HTTP_STATUS_NOT_FOUND, e.getMessage());
 		return new ResponseEntity<> (apiError, HttpStatus.OK);
 	}
+	
 	@ExceptionHandler(value= {Exception.class})
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ResponseEntity<Object> handleException(Exception e)
 	{
 		APIErrorResponseDTO apiError = new APIErrorResponseDTO(HttpStatus.NOT_FOUND,
-				404, e.getMessage(),e.getCause());
+				HTTP_STATUS_NOT_FOUND, e.getMessage(),e.getCause());
 		return new ResponseEntity<> (apiError, HttpStatus.OK);
 	}
 	

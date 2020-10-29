@@ -1,9 +1,15 @@
 package com.movieapp.inventoryservice.dto;
 
+import java.io.Serializable;
+
 import org.springframework.http.HttpStatus;
 
 
-public class APISuccessResponseDTO {
+public class APISuccessResponseDTO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private HttpStatus httpStatus;
 	private int statusCode;
 	private String message;

@@ -200,6 +200,7 @@
 		}
 
 		public static void checkStatus(APISuccessResponseDTO response) throws ServiceException {
+			logger.info("Response from other api {}",response.toString());
 			if (response.getStatusCode() != 200) {
 				logger.error("Error in calling other service");
 				throw new ServiceException("Error in calling service message:" + response.getBody());

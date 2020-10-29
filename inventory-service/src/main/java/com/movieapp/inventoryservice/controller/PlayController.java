@@ -27,6 +27,8 @@ import com.movieapp.inventoryservice.service.PlayService;
 public class PlayController {
 
 	public static final String MESSAGE = "message";
+
+	public static final int HTTP_STATUS_OK = 200;
 	@Autowired
 	PlayService playService;
 
@@ -36,11 +38,7 @@ public class PlayController {
 	public ResponseEntity<APISuccessResponseDTO> addPlay(@RequestBody Play play) throws ServiceException {
 		logger.info("Add play details");
 		Play playDetails = playService.addPlay(play);
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Play Added Successfull");
-		response.setBody(playDetails);
+		APISuccessResponseDTO response = createResponse(playDetails, "Play Added Successfull");
 		logger.info("Play details added");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);
@@ -50,11 +48,7 @@ public class PlayController {
 	public ResponseEntity<APISuccessResponseDTO> getAllPlay() throws PlayNotFoundException {
 		logger.info("Get all play details");
 		List<Play> playList = playService.getAllPlay();
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Get all Plays Successfull");
-		response.setBody(playList);
+		APISuccessResponseDTO response = createResponse(playList, "Get all Plays Successfull");
 		logger.info("Got all play details");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);
@@ -64,11 +58,7 @@ public class PlayController {
 	public ResponseEntity<APISuccessResponseDTO> getPlayById(@PathVariable int playId) throws PlayNotFoundException {
 		logger.info("Get play details by id");
 		Play play = playService.getPlayById(playId);
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Get Plays by Id Successfull");
-		response.setBody(play);
+		APISuccessResponseDTO response = createResponse(play, "Get Plays by Id Successfull");
 		logger.info("Got play by id");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);
@@ -78,11 +68,7 @@ public class PlayController {
 	public ResponseEntity<APISuccessResponseDTO> updatePlay(@RequestBody Play play) throws ServiceException {
 		logger.info("Update play details");
 		Play playDetails = playService.updatePlay(play);
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Play Updated Successfull");
-		response.setBody(playDetails);
+		APISuccessResponseDTO response = createResponse(playDetails, "Play Updated Successfull");
 		logger.info("Play details updated");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);
@@ -92,14 +78,19 @@ public class PlayController {
 	public ResponseEntity<APISuccessResponseDTO> deletePlay(@PathVariable int playId) throws ServiceException {
 		logger.info("Delete play by id");
 		playService.deletePlay(playId);
-		APISuccessResponseDTO response = new APISuccessResponseDTO();
-		response.setHttpStatus(HttpStatus.ACCEPTED);
-		response.setStatusCode(200);
-		response.setMessage("Play Deleted Successfull");
-		response.setBody(null);
+		APISuccessResponseDTO response = createResponse(null, "Play Updated Successfull");
 		logger.info("play deleted");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);
+	}
+
+	private APISuccessResponseDTO createResponse(Object object, String message) {
+		APISuccessResponseDTO response = new APISuccessResponseDTO();
+		response.setHttpStatus(HttpStatus.ACCEPTED);
+		response.setStatusCode(HTTP_STATUS_OK);
+		response.setMessage(message);
+		response.setBody(object);
+		return response;
 	}
 
 }

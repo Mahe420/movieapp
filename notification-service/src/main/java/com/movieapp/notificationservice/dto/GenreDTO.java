@@ -1,6 +1,12 @@
 package com.movieapp.notificationservice.dto;
 
-public class GenreDTO {
+import java.io.Serializable;
+
+public class GenreDTO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private String name;
 	
