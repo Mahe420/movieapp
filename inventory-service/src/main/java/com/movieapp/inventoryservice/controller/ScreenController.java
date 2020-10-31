@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.movieapp.inventoryservice.dto.APISuccessResponseDTO;
 import com.movieapp.inventoryservice.entity.Screen;
-import com.movieapp.inventoryservice.exception.ScreenNotFoundException;
+import com.movieapp.inventoryservice.exception.ApplicationException;
 import com.movieapp.inventoryservice.exception.ServiceException;
 import com.movieapp.inventoryservice.service.ScreenService;
 
@@ -47,7 +47,7 @@ public class ScreenController {
 	}
 
 	@GetMapping("/screen")
-	public ResponseEntity<APISuccessResponseDTO> getAllScreen() throws ScreenNotFoundException {
+	public ResponseEntity<APISuccessResponseDTO> getAllScreen() throws ApplicationException {
 		logger.info("Get all screens");
 		List<Screen> screenList = screenService.getAllScreen();
 		APISuccessResponseDTO response = createResponse(screenList, "Get all Screens Successfull");
@@ -58,7 +58,7 @@ public class ScreenController {
 
 	@GetMapping("/screen/{screenId}")
 	public ResponseEntity<APISuccessResponseDTO> getScreenById(@PathVariable int screenId)
-			throws ScreenNotFoundException {
+			throws ApplicationException	 {
 		logger.info("Get screen by id");
 		Screen screen = screenService.getScreenById(screenId);
 		APISuccessResponseDTO response = createResponse(screen, "Get Screens by ID Successfull");
@@ -81,7 +81,7 @@ public class ScreenController {
 	public ResponseEntity<APISuccessResponseDTO> deleteScreen(@PathVariable int screenId) throws ServiceException {
 		logger.info("delete screen by id");
 		screenService.deleteScreen(screenId);
-		APISuccessResponseDTO response = createResponse(null,"Delete screen Successfull");
+		APISuccessResponseDTO response = createResponse(null,"Screen deleted Successfull");
 		logger.info("screen by id deleted");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);

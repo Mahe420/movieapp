@@ -28,8 +28,8 @@ import com.movieapp.userservice.constants.Role;
 import com.movieapp.userservice.dto.APISuccessResponseDTO;
 import com.movieapp.userservice.dto.UserDTO;
 import com.movieapp.userservice.entity.User;
+import com.movieapp.userservice.exception.ApplicationException;
 import com.movieapp.userservice.exception.ServiceException;
-import com.movieapp.userservice.exception.UserNotFoundException;
 import com.movieapp.userservice.service.UserService;
 
 @RestController
@@ -51,7 +51,7 @@ public class UserController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<APISuccessResponseDTO> addUser(@Valid @RequestBody UserDTO userDTO,
-			BindingResult bindingResult) throws ServiceException {
+			BindingResult bindingResult) throws ApplicationException {
 		logger.info("Enter signup to add user");
 		if (bindingResult.hasErrors()) {
 			StringBuilder errorMessage = new StringBuilder();
@@ -79,7 +79,7 @@ public class UserController {
 
 	@GetMapping("/users")
 	@PreAuthorize(" hasRole('ROLE_ADMIN')")
-	public ResponseEntity<APISuccessResponseDTO> getAllUser() throws UserNotFoundException {
+	public ResponseEntity<APISuccessResponseDTO> getAllUser() throws ApplicationException {
 		logger.info("Entered getAll to retrive all users");
 		List<UserDTO> userList = userService.getAllUser();
 		APISuccessResponseDTO response =  createResponse(userList, "Get all User Successfull");
@@ -90,7 +90,7 @@ public class UserController {
 
 	@GetMapping("/users/{userId}")
 	@PreAuthorize("  hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-	public ResponseEntity<APISuccessResponseDTO> getUserById(@PathVariable int userId) throws UserNotFoundException {
+	public ResponseEntity<APISuccessResponseDTO> getUserById(@PathVariable int userId) throws ApplicationException {
 		logger.info("Entered to retrieve get user by id");
 		UserDTO userDTO = userService.getUserById(userId);
 		APISuccessResponseDTO response = createResponse(userDTO, "Get User by Id Successfull");

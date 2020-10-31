@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.movieapp.inventoryservice.dto.APISuccessResponseDTO;
 import com.movieapp.inventoryservice.entity.Movie;
-import com.movieapp.inventoryservice.exception.MovieNotFoundException;
+import com.movieapp.inventoryservice.exception.ApplicationException;
 import com.movieapp.inventoryservice.exception.ServiceException;
 import com.movieapp.inventoryservice.service.MovieService;
 
@@ -45,7 +45,7 @@ public class MovieController {
 	}
 
 	@GetMapping("/movie")
-	public ResponseEntity<APISuccessResponseDTO> getAllMovies() throws MovieNotFoundException {
+	public ResponseEntity<APISuccessResponseDTO> getAllMovies() throws ApplicationException {
 		logger.info("To get all movies");
 		List<Movie> movieList = movieService.getAllMovies();
 		APISuccessResponseDTO response = createResponse(movieList, "Get all Movie Successfull");
@@ -55,7 +55,7 @@ public class MovieController {
 	}
 
 	@GetMapping("/movie/{movieId}")
-	public ResponseEntity<APISuccessResponseDTO> getMovieById(@PathVariable int movieId) throws ServiceException {
+	public ResponseEntity<APISuccessResponseDTO> getMovieById(@PathVariable int movieId) throws ApplicationException {
 		logger.info("To get movie by id");
 		Movie movie = movieService.getMovieById(movieId);
 		APISuccessResponseDTO response = createResponse(movie, "Get Movie by Id Successfull");
@@ -68,7 +68,7 @@ public class MovieController {
 	public ResponseEntity<APISuccessResponseDTO> updateMovie(@RequestBody Movie movie) throws ServiceException {
 		logger.info("Update movie details");
 		Movie movieDetails = movieService.updateMovie(movie);
-		APISuccessResponseDTO response = createResponse(movieDetails, "Get Movie by Id Successfull");
+		APISuccessResponseDTO response = createResponse(movieDetails, "Movie details updated Successfully");
 		logger.info("Movie details updated");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);
@@ -78,7 +78,7 @@ public class MovieController {
 	public ResponseEntity<APISuccessResponseDTO> deleteMovie(@PathVariable int movieId) throws ServiceException {
 		logger.info("Delete movie by id");
 		movieService.deleteMovie(movieId);
-		APISuccessResponseDTO response = createResponse(null,"Get Movie by Id Successfull");
+		APISuccessResponseDTO response = createResponse(null,"Movie deleted Successfull");
 		logger.info("deleted movie");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);

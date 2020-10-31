@@ -18,9 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.movieapp.userservice.dto.UserDTO;
 import com.movieapp.userservice.entity.AuthUserDetails;
 import com.movieapp.userservice.entity.User;
+import com.movieapp.userservice.exception.ApplicationException;
 import com.movieapp.userservice.exception.ServiceException;
-import com.movieapp.userservice.exception.UserNameAlreadyExistsException;
-import com.movieapp.userservice.exception.UserNotFoundException;
 import com.movieapp.userservice.repository.UserRepository;
 import com.movieapp.userservice.service.UserService;
 
@@ -37,9 +36,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String name) {
 		logger.info("To load user by name");
-		User user = userRepository.findUserByuserName(name)
+		User user=new User();
+		user = userRepository.findUserByuserName(name)
 				.orElseThrow(() -> new UsernameNotFoundException("UserName not found "));
-
 		UserDetails userDetails = new AuthUserDetails(user);
 		new AccountStatusUserDetailsChecker().check(userDetails);
 		logger.info("User has been found");
@@ -47,45 +46,45 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public User addUser(User user) throws UserNameAlreadyExistsException {
+	public User addUser(User user) throws ApplicationException {
 		try {
 			Optional<User> userDetails = userRepository.findUserByuserName(user.getUserName());
 			if (userDetails.isPresent()) {
 				logger.error("User is already present");
-				throw new UserNameAlreadyExistsException("Username Already Exists");
+				throw new ApplicationException("Username Already Exists");
 			}
 			return userRepository.save(user);
 		} catch (DataAccessException e) {
 			logger.error("Error: {}", e.getCause());
-			throw new UserNameAlreadyExistsException("User Not Saved", e.getCause());
+			throw new ServiceException("User Not Saved", e.getCause());
 		}
 	}
 
 	@Override
-	public List<UserDTO> getAllUser() throws UserNotFoundException {
+	public List<UserDTO> getAllUser() throws ApplicationException {
 		try {
 			List<User> userList = userRepository.findAll();
 			if (userList.isEmpty()) {
-				throw new UserNotFoundException("No User Found");
+				throw new ApplicationException("No User Found");
 			}
 			return userList.stream()
 					.map(user -> new UserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(),
 							user.getPhoneNumber(), user.getUserName(), user.getPassword(), user.getRole()))
 					.collect(Collectors.toList());
 		} catch (DataAccessException e) {
-			throw new UserNotFoundException(ERROR_CONNECT, e.getCause());
+			throw new ServiceException(ERROR_CONNECT, e.getCause());
 		}
 	}
 
 	@Override
-	public UserDTO getUserById(int userId) throws UserNotFoundException {
+	public UserDTO getUserById(int userId) throws ApplicationException {
 		try {
 			User user = userRepository.findById(userId)
-					.orElseThrow(() -> new UserNotFoundException("No User Found for the ID" + " " + userId));
+					.orElseThrow(() -> new ApplicationException("No User Found for the ID" + " " + userId));
 			return new UserDTO(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(),
 					user.getPhoneNumber(), user.getUserName(), user.getPassword(), user.getRole());
 		} catch (DataAccessException e) {
-			throw new UserNotFoundException(ERROR_CONNECT, e.getCause());
+			throw new ServiceException(ERROR_CONNECT, e.getCause());
 		}
 	}
 

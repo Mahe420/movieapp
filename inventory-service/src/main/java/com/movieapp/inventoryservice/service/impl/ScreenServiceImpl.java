@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.movieapp.inventoryservice.entity.Screen;
 import com.movieapp.inventoryservice.entity.Theatre;
-import com.movieapp.inventoryservice.exception.ScreenNotFoundException;
+import com.movieapp.inventoryservice.exception.ApplicationException;
 import com.movieapp.inventoryservice.exception.ServiceException;
 import com.movieapp.inventoryservice.repository.ScreenRepository;
 import com.movieapp.inventoryservice.repository.TheatreRepository;
@@ -37,15 +37,15 @@ public class ScreenServiceImpl implements ScreenService {
 	}
 
 	@Override
-	public List<Screen> getAllScreen() throws ScreenNotFoundException {
+	public List<Screen> getAllScreen() throws ApplicationException {
 		try {
 			List<Screen> screenList = screenRepository.findAll();
 			if (screenList.isEmpty()) {
-				throw new ScreenNotFoundException("Screen Not Found");
+				throw new ApplicationException("Screen Not Found");
 			}
 			return screenList;
 		} catch (DataAccessException e) {
-			throw new ScreenNotFoundException(ERROR_CONNECT, e.getCause());
+			throw new ServiceException(ERROR_CONNECT, e.getCause());
 		}
 	}
 
@@ -70,12 +70,12 @@ public class ScreenServiceImpl implements ScreenService {
 	}
 
 	@Override
-	public Screen getScreenById(int screenId) throws ScreenNotFoundException {
+	public Screen getScreenById(int screenId) throws ApplicationException {
 		try {
 			return screenRepository.findById(screenId)
-					.orElseThrow(() -> new ScreenNotFoundException("Screen Not Found for the ID" + " " + screenId));
+					.orElseThrow(() -> new ApplicationException("Screen Not Found for the ID" + " " + screenId));
 		} catch (DataAccessException e) {
-			throw new ScreenNotFoundException(ERROR_CONNECT, e.getCause());
+			throw new ServiceException(ERROR_CONNECT, e.getCause());
 		}
 	}
 

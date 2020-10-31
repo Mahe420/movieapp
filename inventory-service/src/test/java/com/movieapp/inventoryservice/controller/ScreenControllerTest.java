@@ -135,7 +135,7 @@ public class ScreenControllerTest {
 	public void deleteScreenTest() throws Exception
 	{
 		MvcResult result = this.mockMvc.perform(delete("/screen/1")).andReturn();
-		assertTrue(result.getResponse().getContentAsString().contains("Screen Deleted Successfull"));
+		assertTrue(result.getResponse().getContentAsString().contains("Screen deleted Successfull"));
 	}
 	
 	public Screen getScreen()

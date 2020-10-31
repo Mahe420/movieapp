@@ -1,4 +1,4 @@
-package com.movieapp.inventoryservice.service.impl;
+	package com.movieapp.inventoryservice.service.impl;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.movieapp.inventoryservice.entity.Cast;
 import com.movieapp.inventoryservice.entity.Genre;
 import com.movieapp.inventoryservice.entity.Movie;
-import com.movieapp.inventoryservice.exception.MovieNotFoundException;
+import com.movieapp.inventoryservice.exception.ApplicationException;
 import com.movieapp.inventoryservice.exception.ServiceException;
 import com.movieapp.inventoryservice.repository.CastRepository;
 import com.movieapp.inventoryservice.repository.GenreRepository;
@@ -56,15 +56,15 @@ public class MovieServiceImpl implements MovieService {
 	}
 
 	@Override
-	public List<Movie> getAllMovies() throws MovieNotFoundException {
+	public List<Movie> getAllMovies() throws ApplicationException{
 		try {
 			List<Movie> movieList  = movieRepository.findAll();
 			if (movieList.isEmpty()) {
-				throw new MovieNotFoundException("No Movies Found");
+				throw new ApplicationException("No Movies Found");
 			}
 			return movieList;
 		} catch (DataAccessException e) {
-			throw new MovieNotFoundException(ERROR_CONNECT, e.getCause());
+			throw new ServiceException(ERROR_CONNECT, e.getCause());
 		}
 	}
 
@@ -97,10 +97,10 @@ public class MovieServiceImpl implements MovieService {
 	}
 
 	@Override
-	public Movie getMovieById(int movieId) throws ServiceException {
+	public Movie getMovieById(int movieId) throws ApplicationException {
 		try {
 			return movieRepository.findById(movieId)
-					.orElseThrow(() -> new MovieNotFoundException("No Movie Found for the ID" + " " + movieId));
+					.orElseThrow(() -> new ApplicationException("No Movie Found for the ID" + " " + movieId));
 		} catch (DataAccessException e) {
 			throw new ServiceException(ERROR_CONNECT, e.getCause());
 		}

@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.movieapp.inventoryservice.entity.Movie;
 import com.movieapp.inventoryservice.entity.Play;
 import com.movieapp.inventoryservice.entity.Screen;
-import com.movieapp.inventoryservice.exception.PlayNotFoundException;
+import com.movieapp.inventoryservice.exception.ApplicationException;
 import com.movieapp.inventoryservice.exception.ServiceException;
 import com.movieapp.inventoryservice.repository.MovieRepository;
 import com.movieapp.inventoryservice.repository.PlayRepository;
@@ -45,15 +45,15 @@ public class PlayServiceImpl implements PlayService {
 	}
 
 	@Override
-	public List<Play> getAllPlay() throws PlayNotFoundException {
+	public List<Play> getAllPlay() throws ApplicationException {
 		try {
 			List<Play> playList = playRepository.findAll();
 			if (playList.isEmpty()) {
-				throw new PlayNotFoundException("No Play Found");
+				throw new ApplicationException("No Play Found");
 			}
 			return playList;
 		} catch (DataAccessException e) {
-			throw new PlayNotFoundException(ERROR_CONNECT, e.getCause());
+			throw new ServiceException(ERROR_CONNECT, e.getCause());
 		}
 	}
 
@@ -75,17 +75,17 @@ public class PlayServiceImpl implements PlayService {
 		try {
 			playRepository.deleteById(playId);
 		} catch (DataAccessException e) {
-			throw new PlayNotFoundException(ERROR_CONNECT, e.getCause());
+			throw new ServiceException(ERROR_CONNECT, e.getCause());
 		}
 	}
 
 	@Override
-	public Play getPlayById(int playId) throws PlayNotFoundException {
+	public Play getPlayById(int playId) throws ApplicationException {
 		try {
 			return playRepository.findById(playId)
-					.orElseThrow(() -> new PlayNotFoundException("No Play Found for he ID" + " " + playId));
+					.orElseThrow(() -> new ApplicationException("No Play Found for he ID" + " " + playId));
 		} catch (DataAccessException e) {
-			throw new PlayNotFoundException(ERROR_CONNECT, e.getCause());
+			throw new ServiceException(ERROR_CONNECT, e.getCause());
 		}
 	}
 

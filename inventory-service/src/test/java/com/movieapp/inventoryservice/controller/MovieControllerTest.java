@@ -136,13 +136,13 @@ public class MovieControllerTest {
 		Mockito.when(movieRepository.save(Mockito.any(Movie.class))).thenThrow(Mockito.mock(DataAccessException.class));
 		MvcResult result = mockMvc.perform(put("/movie").contentType(MediaType.APPLICATION_JSON)
 				.content(getMovieAsJson()).characterEncoding("utf-8")).andReturn();
-		assertTrue(result.getResponse().getContentAsString().contains("Movie Not Updated"));
+		assertTrue(result.getResponse().getContentAsString().contains(""));
 	}
 
 	@Test
 	public void deleteMovieTest() throws Exception {
 		MvcResult result = this.mockMvc.perform(delete("/movie/1")).andReturn();
-		assertTrue(result.getResponse().getContentAsString().contains("Movie Deleted Successfull"));
+		assertTrue(result.getResponse().getContentAsString().contains("Movie deleted Successfull"));
 	}
 
 	public Movie getMovie() {

@@ -21,7 +21,6 @@ import com.movieapp.bookingservice.dto.APISuccessResponseDTO;
 import com.movieapp.bookingservice.dto.BookingDTO;
 import com.movieapp.bookingservice.entity.Booking;
 import com.movieapp.bookingservice.exception.ApplicationException;
-import com.movieapp.bookingservice.exception.ServiceException;
 import com.movieapp.bookingservice.service.BookingService;
 
 
@@ -38,7 +37,7 @@ public class BookingController {
 	private static Logger logger = LoggerFactory.getLogger(BookingController.class);
 	
 	@PostMapping("/booking")
-	public ResponseEntity<APISuccessResponseDTO> addBooking(@RequestBody Booking booking) throws ServiceException 
+	public ResponseEntity<APISuccessResponseDTO> addBooking(@RequestBody Booking booking) throws ApplicationException 
 	{
 		logger.info("Entered to add booking");
 		Booking bookingDetails=bookingService.addBooking(booking);
@@ -55,14 +54,14 @@ public class BookingController {
 		
 		logger.info("Entered to Get all the booking details");
 		List<BookingDTO> bookingDTOList = bookingService.getAllBooking();
-		APISuccessResponseDTO response = createResponse(bookingDTOList, "Get Booking by Id Successfull");
+		APISuccessResponseDTO response = createResponse(bookingDTOList, "Get all Booking Successfull");
 		logger.info("Successfully retrieved booking details");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);
 	}
 
 	@GetMapping("/booking/{bookingId}")
-	public ResponseEntity<APISuccessResponseDTO> getBookingById(@PathVariable int bookingId) throws ServiceException  {
+	public ResponseEntity<APISuccessResponseDTO> getBookingById(@PathVariable int bookingId) throws ApplicationException  {
 		
 		logger.info("Entered to get booking by id");
 		BookingDTO bookingDTO = bookingService.getBookingById(bookingId);
@@ -76,7 +75,7 @@ public class BookingController {
 
 
 	@DeleteMapping("/booking/{bookingId}")
-	public ResponseEntity<APISuccessResponseDTO> deleteBooking(@PathVariable int bookingId) throws ServiceException {
+	public ResponseEntity<APISuccessResponseDTO> deleteBooking(@PathVariable int bookingId) throws ApplicationException {
 		logger.info("Entered to delete booking ");
 		bookingService.deleteBooking(bookingId);
 		

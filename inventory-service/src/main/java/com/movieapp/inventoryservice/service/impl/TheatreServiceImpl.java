@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.movieapp.inventoryservice.entity.Address;
 import com.movieapp.inventoryservice.entity.Location;
 import com.movieapp.inventoryservice.entity.Theatre;
+import com.movieapp.inventoryservice.exception.ApplicationException;
 import com.movieapp.inventoryservice.exception.ServiceException;
-import com.movieapp.inventoryservice.exception.TheatreNotFoundException;
 import com.movieapp.inventoryservice.repository.AddressRepository;
 import com.movieapp.inventoryservice.repository.LocationRepository;
 import com.movieapp.inventoryservice.repository.TheatreRepository;
@@ -44,15 +44,15 @@ public class TheatreServiceImpl implements TheatreService {
 	}
 
 	@Override
-	public List<Theatre> getAlltheatre() throws TheatreNotFoundException {
+	public List<Theatre> getAlltheatre() throws ApplicationException {
 		try {
 			List<Theatre> theatreList  = theatreRepository.findAll();
 			if (theatreList.isEmpty()) {
-				throw new TheatreNotFoundException("No Theatre Found");
+				throw new ApplicationException("No Theatre Found");
 			}
 			return theatreList;
 		} catch (DataAccessException e) {
-			throw new TheatreNotFoundException("Failed to connect", e.getCause());
+			throw new ServiceException("Failed to connect", e.getCause());
 		}
 	}
 
@@ -79,13 +79,13 @@ public class TheatreServiceImpl implements TheatreService {
 	}
 
 	@Override
-	public Theatre getTheatreById(int theatreId) throws TheatreNotFoundException {
+	public Theatre getTheatreById(int theatreId) throws ApplicationException {
 		try {
 			return theatreRepository.findById(theatreId)
-					.orElseThrow(() -> new TheatreNotFoundException("No Theatre Found for the ID" + " " + theatreId));
+					.orElseThrow(() -> new ApplicationException("No Theatre Found for the ID" + " " + theatreId));
 			
 		} catch (DataAccessException e) {
-			throw new TheatreNotFoundException("Failed to connect", e.getCause());
+			throw new ServiceException("Failed to connect", e.getCause());
 		}
 	}
 

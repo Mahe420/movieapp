@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.movieapp.inventoryservice.dto.APISuccessResponseDTO;
 import com.movieapp.inventoryservice.entity.Play;
-import com.movieapp.inventoryservice.exception.PlayNotFoundException;
+import com.movieapp.inventoryservice.exception.ApplicationException;
 import com.movieapp.inventoryservice.exception.ServiceException;
 import com.movieapp.inventoryservice.service.PlayService;
 
@@ -45,7 +45,7 @@ public class PlayController {
 	}
 
 	@GetMapping("/play")
-	public ResponseEntity<APISuccessResponseDTO> getAllPlay() throws PlayNotFoundException {
+	public ResponseEntity<APISuccessResponseDTO> getAllPlay() throws ApplicationException {
 		logger.info("Get all play details");
 		List<Play> playList = playService.getAllPlay();
 		APISuccessResponseDTO response = createResponse(playList, "Get all Plays Successfull");
@@ -55,7 +55,7 @@ public class PlayController {
 	}
 
 	@GetMapping("/play/{playId}")
-	public ResponseEntity<APISuccessResponseDTO> getPlayById(@PathVariable int playId) throws PlayNotFoundException {
+	public ResponseEntity<APISuccessResponseDTO> getPlayById(@PathVariable int playId) throws ApplicationException {
 		logger.info("Get play details by id");
 		Play play = playService.getPlayById(playId);
 		APISuccessResponseDTO response = createResponse(play, "Get Plays by Id Successfull");
@@ -78,7 +78,7 @@ public class PlayController {
 	public ResponseEntity<APISuccessResponseDTO> deletePlay(@PathVariable int playId) throws ServiceException {
 		logger.info("Delete play by id");
 		playService.deletePlay(playId);
-		APISuccessResponseDTO response = createResponse(null, "Play Updated Successfull");
+		APISuccessResponseDTO response = createResponse(null, "Play Deleted Successfull");
 		logger.info("play deleted");
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED))
 				.body(response);

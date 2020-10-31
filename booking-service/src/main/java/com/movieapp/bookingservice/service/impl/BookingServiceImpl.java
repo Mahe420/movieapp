@@ -1,32 +1,31 @@
 	package com.movieapp.bookingservice.service.impl;
 
 	import java.util.List;
-	import java.util.stream.Collectors;
+import java.util.stream.Collectors;
 
-	import org.slf4j.Logger;
-	import org.slf4j.LoggerFactory;
-	import org.springframework.beans.factory.annotation.Autowired;
-	import org.springframework.beans.factory.annotation.Value;
-	import org.springframework.dao.DataAccessException;
-	import org.springframework.http.HttpEntity;
-	import org.springframework.http.HttpMethod;
-	import org.springframework.kafka.core.KafkaTemplate;
-	import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-	import org.springframework.stereotype.Service;
-	import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-	import com.fasterxml.jackson.core.type.TypeReference;
-	import com.fasterxml.jackson.databind.ObjectMapper;
-	import com.movieapp.bookingservice.dto.APISuccessResponseDTO;
-	import com.movieapp.bookingservice.dto.BookingDTO;
-	import com.movieapp.bookingservice.dto.PlayDTO;
-	import com.movieapp.bookingservice.dto.UserDTO;
-	import com.movieapp.bookingservice.entity.Booking;
-	import com.movieapp.bookingservice.exception.BookingNotFoundException;
-	import com.movieapp.bookingservice.exception.SeatErrorException;
-	import com.movieapp.bookingservice.exception.ServiceException;
-	import com.movieapp.bookingservice.repository.BookingRepository;
-	import com.movieapp.bookingservice.service.BookingService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.movieapp.bookingservice.dto.APISuccessResponseDTO;
+import com.movieapp.bookingservice.dto.BookingDTO;
+import com.movieapp.bookingservice.dto.PlayDTO;
+import com.movieapp.bookingservice.dto.UserDTO;
+import com.movieapp.bookingservice.entity.Booking;
+import com.movieapp.bookingservice.exception.ApplicationException;
+import com.movieapp.bookingservice.exception.ServiceException;
+import com.movieapp.bookingservice.repository.BookingRepository;
+import com.movieapp.bookingservice.service.BookingService;
 
 	@Service
 	@Transactional
@@ -60,7 +59,7 @@
 		private static Logger logger = LoggerFactory.getLogger(BookingServiceImpl.class);
 
 		@Override
-		public Booking addBooking(Booking booking) throws ServiceException {
+		public Booking addBooking(Booking booking) throws ApplicationException {
 			try {
 				logger.info("To get play details to check");
 				APISuccessResponseDTO inventoryResponse = restTemplate
@@ -78,29 +77,31 @@
 							.exchange(playUrl, HttpMethod.PUT, updateEntity, APISuccessResponseDTO.class).getBody();
 					checkStatus(updateResponse);
 					Booking bookingSaved = bookingRepository.save(booking);
+					//////////////////////
 					try{
 					kafkaTemplate.send(topicName, bookingSaved);
 					}catch(Exception e){
 						logger.error("Error in Kafka {}",e.getMessage());
 					}
+					//////////////////
 					return bookingSaved;
 				} else {
 					logger.error(NO_SEATS);
-					throw new SeatErrorException(NO_SEATS);
+					throw new ApplicationException(NO_SEATS);
 				}
 			} catch (DataAccessException e) {
 				logger.error(ERROR_CONNECTION+" {}", e.getCause());
-				throw new BookingNotFoundException("Booking Not Saved", e.getCause());
+				throw new ServiceException("Booking Not Saved", e.getCause());
 			}
 		}
 
 		@Override
-		public List<BookingDTO> getAllBooking() throws ServiceException {
+		public List<BookingDTO> getAllBooking() throws ApplicationException {
 			try {
 				List<Booking> bookingList = bookingRepository.findAll();
 				if (bookingList.isEmpty()) {
 					logger.info("Empty booking details present in db");
-					throw new BookingNotFoundException("No Bookings Found");
+					throw new ApplicationException("No Bookings Found");
 				}
 
 				APISuccessResponseDTO userResponse = restTemplate
@@ -134,15 +135,15 @@
 				
 			} catch (DataAccessException e) {
 				logger.error(ERROR_CONNECTION+"{}", e.getCause());
-				throw new BookingNotFoundException(ERROR_CONNECTION, e.getCause()) ;
+				throw new ServiceException(ERROR_CONNECTION, e.getCause()) ;
 			}
 		}
 
 		@Override
-		public BookingDTO getBookingById(int bookingId) throws ServiceException {
+		public BookingDTO getBookingById(int bookingId) throws ApplicationException {
 			try {
 				Booking booking = bookingRepository.findById(bookingId)
-						.orElseThrow(() -> new BookingNotFoundException("No Booking Found for the Id" + " " + bookingId));
+						.orElseThrow(() -> new ServiceException("No Booking Found for the Id" + " " + bookingId));
 				APISuccessResponseDTO userResponse = restTemplate
 						.exchange(userUrl + booking.getUserid(), HttpMethod.GET, null, APISuccessResponseDTO.class)
 						.getBody();
@@ -161,16 +162,16 @@
 
 			} catch (DataAccessException e) {
 				logger.error(ERROR_CONNECTION+" {}", e.getCause());
-				throw new BookingNotFoundException(ERROR_CONNECTION, e.getCause());
+				throw new ServiceException(ERROR_CONNECTION, e.getCause());
 			}
 		}
 
 		@Override
-		public void deleteBooking(int bookingId) throws ServiceException {
+		public void deleteBooking(int bookingId) throws ApplicationException {
 
 			try {
 				Booking booking = bookingRepository.findById(bookingId)
-						.orElseThrow(() -> new BookingNotFoundException("No Booking Found for the Id " + bookingId));
+						.orElseThrow(() -> new ApplicationException("No Booking Found for the Id " + bookingId));
 				APISuccessResponseDTO inventoryResponse = restTemplate
 						.exchange(playUrl + booking.getPlayid(), HttpMethod.GET, null, APISuccessResponseDTO.class)
 						.getBody();
@@ -190,20 +191,20 @@
 					bookingRepository.deleteById(bookingId);
 				} else {
 					logger.info(NO_SEATS);
-					throw new SeatErrorException(NO_SEATS);
+					throw new ApplicationException(NO_SEATS);
 				}
 			} catch (DataAccessException e) {
 				logger.error(ERROR_CONNECTION+" {}", e.getCause());
-				throw new BookingNotFoundException(ERROR_CONNECTION, e.getCause());
+				throw new ServiceException(ERROR_CONNECTION, e.getCause());
 			}
 
 		}
 
-		public static void checkStatus(APISuccessResponseDTO response) throws ServiceException {
+		public static void checkStatus(APISuccessResponseDTO response) throws ApplicationException {
 			logger.info("Response from other api {}",response.toString());
 			if (response.getStatusCode() != 200) {
 				logger.error("Error in calling other service");
-				throw new ServiceException("Error in calling service message:" + response.getBody());
+				throw new ApplicationException("Error in calling service message:" + response.getBody());
 			}
 		}
 

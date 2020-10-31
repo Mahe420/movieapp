@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.movieapp.inventoryservice.dto.APISuccessResponseDTO;
 import com.movieapp.inventoryservice.entity.Theatre;
+import com.movieapp.inventoryservice.exception.ApplicationException;
 import com.movieapp.inventoryservice.exception.ServiceException;
-import com.movieapp.inventoryservice.exception.TheatreNotFoundException;
 import com.movieapp.inventoryservice.service.TheatreService;
 
 @RestController
@@ -45,7 +45,7 @@ public class TheatreController {
 	}
 	
 	@GetMapping("/theatre")
-	public ResponseEntity<APISuccessResponseDTO> getAllTheatre() throws TheatreNotFoundException {
+	public ResponseEntity<APISuccessResponseDTO> getAllTheatre() throws ApplicationException {
 		logger.info("Get all theatre values");
 		List<Theatre> theatreList =theatreService.getAlltheatre();
 		APISuccessResponseDTO response = createResponse(theatreList, "Get all Theatre Successfull");
@@ -54,7 +54,7 @@ public class TheatreController {
 	}
 	
 	@GetMapping("/theatre/{theatreId}")
-	public ResponseEntity<APISuccessResponseDTO> getTheatreById(@PathVariable int theatreId) throws TheatreNotFoundException {
+	public ResponseEntity<APISuccessResponseDTO> getTheatreById(@PathVariable int theatreId) throws ApplicationException {
 		logger.info("Get theatre by id");
 		Theatre theatre=theatreService.getTheatreById(theatreId);
 		APISuccessResponseDTO response = createResponse(theatre, "Get Theatre by Id Successfull");

@@ -4,16 +4,16 @@ import java.util.List;
 
 import com.movieapp.bookingservice.dto.BookingDTO;
 import com.movieapp.bookingservice.entity.Booking;
-import com.movieapp.bookingservice.exception.ServiceException;
+import com.movieapp.bookingservice.exception.ApplicationException;
 
 public interface BookingService {
 
-	Booking addBooking(Booking booking) throws ServiceException;
+	Booking addBooking(Booking booking) throws ApplicationException;
 
-	List<BookingDTO> getAllBooking() throws ServiceException;
+	List<BookingDTO> getAllBooking() throws ApplicationException;
 
-	BookingDTO getBookingById(int bookingId) throws ServiceException;
+	BookingDTO getBookingById(int bookingId) throws ApplicationException;
 
-	void deleteBooking(int bookingId) throws ServiceException;
+	void deleteBooking(int bookingId) throws ApplicationException;
 
 }
