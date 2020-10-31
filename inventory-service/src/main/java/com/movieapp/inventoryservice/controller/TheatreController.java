@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.movieapp.inventoryservice.dto.APISuccessResponseDTO;
@@ -24,6 +25,7 @@ import com.movieapp.inventoryservice.service.TheatreService;
 
 @RestController
 @CrossOrigin
+@RequestMapping(value="/theatre/v1")
 public class TheatreController {
 	
 	public static final String MESSAGE="message";
@@ -34,7 +36,7 @@ public class TheatreController {
 	
 	private static Logger logger = LoggerFactory.getLogger(TheatreController.class);
 	
-	@PostMapping("/theatre")
+	@PostMapping
 	public ResponseEntity<APISuccessResponseDTO> addTheatre(@RequestBody Theatre theatre ) throws ServiceException
 	{
 		logger.info("Add theatre");
@@ -44,7 +46,7 @@ public class TheatreController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED)).body(response);	
 	}
 	
-	@GetMapping("/theatre")
+	@GetMapping
 	public ResponseEntity<APISuccessResponseDTO> getAllTheatre() throws ApplicationException {
 		logger.info("Get all theatre values");
 		List<Theatre> theatreList =theatreService.getAlltheatre();
@@ -53,7 +55,7 @@ public class TheatreController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED)).body(response);
 	}
 	
-	@GetMapping("/theatre/{theatreId}")
+	@GetMapping("/{theatreId}")
 	public ResponseEntity<APISuccessResponseDTO> getTheatreById(@PathVariable int theatreId) throws ApplicationException {
 		logger.info("Get theatre by id");
 		Theatre theatre=theatreService.getTheatreById(theatreId);
@@ -62,7 +64,7 @@ public class TheatreController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED)).body(response);
 	}
      
-	@PutMapping("/theatre")
+	@PutMapping
 	public ResponseEntity<APISuccessResponseDTO> updateTheatre(@RequestBody Theatre theatre) throws ServiceException
 	{
 		logger.info("Update theatre details");
@@ -72,7 +74,7 @@ public class TheatreController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED)).body(response);	
 	}
 
-	@DeleteMapping("/theatre/{theatreId}")
+	@DeleteMapping("/{theatreId}")
 	public ResponseEntity<APISuccessResponseDTO> deleteTheatre(@PathVariable int theatreId) throws ServiceException
 	{
 		logger.info("Delete theatre by id");

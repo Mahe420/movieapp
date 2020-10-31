@@ -15,10 +15,10 @@ kafka:
       id: bookingData-group-id
 
 user:
-  url: http://USER-SERVICE/users/
+  url: http://USER-SERVICE/users/v1/
 
 play:
-  url: http://INVENTORY-SERVICE/play/
+  url: http://INVENTORY-SERVICE/play/v1/
   
 eureka:
   client:

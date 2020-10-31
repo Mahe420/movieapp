@@ -21,7 +21,7 @@ auth:
 
           
 play:
-  url: http://localhost:8080/play/
+  url: http://localhost:8080/play/v1/
 
 eureka:
   client:

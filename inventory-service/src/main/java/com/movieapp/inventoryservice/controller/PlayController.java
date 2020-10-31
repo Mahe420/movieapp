@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.movieapp.inventoryservice.dto.APISuccessResponseDTO;
@@ -24,6 +25,7 @@ import com.movieapp.inventoryservice.service.PlayService;
 
 @RestController
 @CrossOrigin
+@RequestMapping(value="/play/v1")
 public class PlayController {
 
 	public static final String MESSAGE = "message";
@@ -34,7 +36,7 @@ public class PlayController {
 
 	private static Logger logger = LoggerFactory.getLogger(PlayController.class);
 
-	@PostMapping("/play")
+	@PostMapping
 	public ResponseEntity<APISuccessResponseDTO> addPlay(@RequestBody Play play) throws ServiceException {
 		logger.info("Add play details");
 		Play playDetails = playService.addPlay(play);
@@ -44,7 +46,7 @@ public class PlayController {
 				.body(response);
 	}
 
-	@GetMapping("/play")
+	@GetMapping
 	public ResponseEntity<APISuccessResponseDTO> getAllPlay() throws ApplicationException {
 		logger.info("Get all play details");
 		List<Play> playList = playService.getAllPlay();
@@ -54,7 +56,7 @@ public class PlayController {
 				.body(response);
 	}
 
-	@GetMapping("/play/{playId}")
+	@GetMapping("/{playId}")
 	public ResponseEntity<APISuccessResponseDTO> getPlayById(@PathVariable int playId) throws ApplicationException {
 		logger.info("Get play details by id");
 		Play play = playService.getPlayById(playId);
@@ -64,7 +66,7 @@ public class PlayController {
 				.body(response);
 	}
 
-	@PutMapping("/play")
+	@PutMapping
 	public ResponseEntity<APISuccessResponseDTO> updatePlay(@RequestBody Play play) throws ServiceException {
 		logger.info("Update play details");
 		Play playDetails = playService.updatePlay(play);
@@ -74,7 +76,7 @@ public class PlayController {
 				.body(response);
 	}
 
-	@DeleteMapping("/play/{playId}")
+	@DeleteMapping("/{playId}")
 	public ResponseEntity<APISuccessResponseDTO> deletePlay(@PathVariable int playId) throws ServiceException {
 		logger.info("Delete play by id");
 		playService.deletePlay(playId);

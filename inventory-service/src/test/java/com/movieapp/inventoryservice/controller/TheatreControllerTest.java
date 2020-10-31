@@ -60,7 +60,7 @@ public class TheatreControllerTest {
 		Mockito.when(addressRepository.save(Mockito.any(Address.class))).thenReturn(getAddress());
 		Mockito.when(locationRepository.save(Mockito.any(Location.class))).thenReturn(getLocation());
 		Mockito.when(theatreRepository.save(Mockito.any(Theatre.class))).thenReturn(getTheatre());
-		MvcResult result = mockMvc.perform(post("/theatre").contentType(MediaType.APPLICATION_JSON).content(getTheatreAsJson()).characterEncoding("utf-8")).andReturn();
+		MvcResult result = mockMvc.perform(post("/theatre/v1").contentType(MediaType.APPLICATION_JSON).content(getTheatreAsJson()).characterEncoding("utf-8")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("sky walk"));
 	}
 
@@ -68,7 +68,7 @@ public class TheatreControllerTest {
 	public void addTheatreTestError() throws JsonProcessingException, Exception
 	{
 		Mockito.when(theatreRepository.save(Mockito.any(Theatre.class))).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = mockMvc.perform(post("/theatre").contentType(MediaType.APPLICATION_JSON).content(getTheatreAsJson()).characterEncoding("utf-8")).andReturn();
+		MvcResult result = mockMvc.perform(post("/theatre/v1").contentType(MediaType.APPLICATION_JSON).content(getTheatreAsJson()).characterEncoding("utf-8")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Theatre Not Saved"));
 	}
 	
@@ -78,7 +78,7 @@ public class TheatreControllerTest {
 		List<Theatre> theatreList = new ArrayList<>();
 		theatreList.add(getTheatre());
 		Mockito.when(theatreRepository.findAll()).thenReturn(theatreList);
-		MvcResult result = this.mockMvc.perform(get("/theatre")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/theatre/v1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("sky walk"));
 	}
 	
@@ -87,7 +87,7 @@ public class TheatreControllerTest {
 	{
 		List<Theatre> theatreList = new ArrayList<>();
 		Mockito.when(theatreRepository.findAll()).thenReturn(theatreList);
-		MvcResult result = this.mockMvc.perform(get("/theatre")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/theatre/v1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("No Theatre Found"));
 	}
 	
@@ -95,7 +95,7 @@ public class TheatreControllerTest {
 	public void getAllTheatreTestError() throws Exception
 	{
 		Mockito.when(theatreRepository.findAll()).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = this.mockMvc.perform(get("/theatre")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/theatre/v1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Failed to connect"));
 	}
 	
@@ -103,7 +103,7 @@ public class TheatreControllerTest {
 	public void getTheatreByIdTest() throws Exception
 	{
 		Mockito.when(theatreRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(getTheatre()));
-		MvcResult result = mockMvc.perform(get("/theatre/1")).andReturn();
+		MvcResult result = mockMvc.perform(get("/theatre/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("sky walk"));
 	}
 	
@@ -111,7 +111,7 @@ public class TheatreControllerTest {
 	public void getTheatreByIdNotFoundTest() throws Exception
 	{
 		Mockito.when(theatreRepository.findById(Mockito.anyInt())).thenReturn(Optional.empty());
-		MvcResult result = mockMvc.perform(get("/theatre/1")).andReturn();
+		MvcResult result = mockMvc.perform(get("/theatre/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("No Theatre Found for the ID 1"));
 	}
 	
@@ -119,7 +119,7 @@ public class TheatreControllerTest {
 	public void getTheatreByIdTestError() throws Exception
 	{
 		Mockito.when(theatreRepository.findById(Mockito.anyInt())).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = mockMvc.perform(get("/theatre/1")).andReturn();
+		MvcResult result = mockMvc.perform(get("/theatre/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Failed to connect"));
 	}
 	
@@ -129,7 +129,7 @@ public class TheatreControllerTest {
 		Mockito.when(addressRepository.save(Mockito.any(Address.class))).thenReturn(getAddress());
 		Mockito.when(locationRepository.save(Mockito.any(Location.class))).thenReturn(getLocation());
 		Mockito.when(theatreRepository.save(Mockito.any(Theatre.class))).thenReturn(getTheatre());
-		MvcResult result = mockMvc.perform(put("/theatre").contentType(MediaType.APPLICATION_JSON).content(getTheatreAsJson()).characterEncoding("utf-8")).andReturn();
+		MvcResult result = mockMvc.perform(put("/theatre/v1").contentType(MediaType.APPLICATION_JSON).content(getTheatreAsJson()).characterEncoding("utf-8")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("sky walk"));
 	}
 	
@@ -137,14 +137,14 @@ public class TheatreControllerTest {
 	public void updateTheatreTestError() throws JsonProcessingException, Exception
 	{
 		Mockito.when(theatreRepository.save(Mockito.any(Theatre.class))).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = mockMvc.perform(put("/theatre").contentType(MediaType.APPLICATION_JSON).content(getTheatreAsJson()).characterEncoding("utf-8")).andReturn();
+		MvcResult result = mockMvc.perform(put("/theatre/v1").contentType(MediaType.APPLICATION_JSON).content(getTheatreAsJson()).characterEncoding("utf-8")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Theatre Not Updated"));
 	}
 	
 	@Test
 	public void deleteTheatreTest() throws Exception
 	{
-		MvcResult result = this.mockMvc.perform(delete("/theatre/1")).andReturn();
+		MvcResult result = this.mockMvc.perform(delete("/theatre/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Theatre Deleted Successfull"));
 	}
 	public Address getAddress() {

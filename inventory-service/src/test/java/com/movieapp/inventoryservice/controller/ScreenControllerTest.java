@@ -52,7 +52,7 @@ public class ScreenControllerTest {
 	public void addScreenTest() throws Exception
 	{
 		Mockito.when(screenRepository.save(Mockito.any(Screen.class))).thenReturn(getScreen());
-		MvcResult result = mockMvc.perform(post("/screen").contentType(MediaType.APPLICATION_JSON).content(getScreenAsJson()).characterEncoding("utf-8")).andReturn();
+		MvcResult result = mockMvc.perform(post("/screen/v1").contentType(MediaType.APPLICATION_JSON).content(getScreenAsJson()).characterEncoding("utf-8")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("screen-1"));
 	}
 	
@@ -60,7 +60,7 @@ public class ScreenControllerTest {
 	public void addScreenTestError() throws JsonProcessingException, Exception
 	{
 		Mockito.when(screenRepository.save(Mockito.any(Screen.class))).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = mockMvc.perform(post("/screen").contentType(MediaType.APPLICATION_JSON).content(getScreenAsJson()).characterEncoding("utf-8")).andReturn();
+		MvcResult result = mockMvc.perform(post("/screen/v1").contentType(MediaType.APPLICATION_JSON).content(getScreenAsJson()).characterEncoding("utf-8")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Screen Not Saved"));
 	}
 	
@@ -70,7 +70,7 @@ public class ScreenControllerTest {
 		List<Screen> screenList = new ArrayList<>();
 		screenList.add(getScreen());
 		Mockito.when(screenRepository.findAll()).thenReturn(screenList);
-		MvcResult result = this.mockMvc.perform(get("/screen")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/screen/v1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("screen-1"));
 	}
 	
@@ -79,7 +79,7 @@ public class ScreenControllerTest {
 	{
 		List<Screen> screenList = new ArrayList<>();
 		Mockito.when(screenRepository.findAll()).thenReturn(screenList);
-		MvcResult result = this.mockMvc.perform(get("/screen")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/screen/v1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Screen Not Found"));
 	}
 	
@@ -87,7 +87,7 @@ public class ScreenControllerTest {
 	public void getAllScreenTestError() throws Exception
 	{
 		Mockito.when(screenRepository.findAll()).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = this.mockMvc.perform(get("/screen")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/screen/v1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Failed to connect"));
 	}
 	
@@ -95,7 +95,7 @@ public class ScreenControllerTest {
 	public void getScreenByIdTest() throws Exception
 	{
 		Mockito.when(screenRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(getScreen()));
-		MvcResult result = mockMvc.perform(get("/screen/1")).andReturn();
+		MvcResult result = mockMvc.perform(get("/screen/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("screen-1"));
 	}
     
@@ -103,7 +103,7 @@ public class ScreenControllerTest {
 	public void getScreenByIdNotFoundTest() throws Exception
 	{
 		Mockito.when(screenRepository.findById(Mockito.anyInt())).thenReturn(Optional.empty());
-		MvcResult result = mockMvc.perform(get("/screen/1")).andReturn();
+		MvcResult result = mockMvc.perform(get("/screen/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Screen Not Found for the ID 1"));
 	}
 	
@@ -111,7 +111,7 @@ public class ScreenControllerTest {
 	public void getScreenByIdTestError() throws Exception
 	{
 		Mockito.when(screenRepository.findById(Mockito.anyInt())).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = mockMvc.perform(get("/screen/1")).andReturn();
+		MvcResult result = mockMvc.perform(get("/screen/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Failed to connect"));
 	}
 	
@@ -119,7 +119,7 @@ public class ScreenControllerTest {
 	public void updateScreenTest() throws Exception
 	{
 		Mockito.when(screenRepository.save(Mockito.any(Screen.class))).thenReturn(getScreen());
-		MvcResult result = mockMvc.perform(put("/screen").contentType(MediaType.APPLICATION_JSON).content(getScreenAsJson()).characterEncoding("utf-8")).andReturn();
+		MvcResult result = mockMvc.perform(put("/screen/v1").contentType(MediaType.APPLICATION_JSON).content(getScreenAsJson()).characterEncoding("utf-8")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("screen-1"));
 	}
 	
@@ -127,14 +127,14 @@ public class ScreenControllerTest {
 	public void updateScrreenTestError() throws JsonProcessingException, Exception
 	{
 		Mockito.when(screenRepository.save(Mockito.any(Screen.class))).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = mockMvc.perform(put("/screen").contentType(MediaType.APPLICATION_JSON).content(getScreenAsJson()).characterEncoding("utf-8")).andReturn();
+		MvcResult result = mockMvc.perform(put("/screen/v1").contentType(MediaType.APPLICATION_JSON).content(getScreenAsJson()).characterEncoding("utf-8")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Screen Not Updated"));
 	}
 	
 	@Test
 	public void deleteScreenTest() throws Exception
 	{
-		MvcResult result = this.mockMvc.perform(delete("/screen/1")).andReturn();
+		MvcResult result = this.mockMvc.perform(delete("/screen/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Screen deleted Successfull"));
 	}
 	

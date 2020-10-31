@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.movieapp.userservice.constants.Role;
@@ -36,6 +37,7 @@ import com.movieapp.userservice.service.UserService;
 @CrossOrigin
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequestMapping(value="/users/v1")
 public class UserController {
 	
 	public  static final String MESSAGE="message";
@@ -77,7 +79,7 @@ public class UserController {
 				.body(response);
 	}
 
-	@GetMapping("/users")
+	@GetMapping
 	@PreAuthorize(" hasRole('ROLE_ADMIN')")
 	public ResponseEntity<APISuccessResponseDTO> getAllUser() throws ApplicationException {
 		logger.info("Entered getAll to retrive all users");
@@ -88,7 +90,7 @@ public class UserController {
 				.body(response);
 	}
 
-	@GetMapping("/users/{userId}")
+	@GetMapping("/{userId}")
 	@PreAuthorize("  hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 	public ResponseEntity<APISuccessResponseDTO> getUserById(@PathVariable int userId) throws ApplicationException {
 		logger.info("Entered to retrieve get user by id");
@@ -99,7 +101,7 @@ public class UserController {
 				.body(response);
 	}
 
-	@PutMapping("/users")
+	@PutMapping
 	@PreAuthorize(" hasRole('ROLE_USER')")
 	public ResponseEntity<APISuccessResponseDTO> updateUser(@RequestBody User user) throws ServiceException {
 		logger.info("Entered to update user");
@@ -110,7 +112,7 @@ public class UserController {
 				.body(response);
 	}
 
-	@DeleteMapping("/users/{userId}")
+	@DeleteMapping("/{userId}")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<APISuccessResponseDTO> deleteUser(@PathVariable int userId) throws ServiceException {
 		logger.info("Entered to delete user by id");

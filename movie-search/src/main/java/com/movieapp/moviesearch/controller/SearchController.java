@@ -15,7 +15,7 @@ import com.movieapp.moviesearch.dto.APISuccessResponseDTO;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/search")
+@RequestMapping("/search/v1")
 public class SearchController {
 	public static final int HTTP_STATUS_OK=200;
 	

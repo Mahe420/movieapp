@@ -57,7 +57,7 @@ public class PlayControllerTest {
 	public void addPlayTest() throws Exception
 	{
 		Mockito.when(playRepository.save(Mockito.any(Play.class))).thenReturn(getPlay());
-		MvcResult result = mockMvc.perform(post("/play").contentType(MediaType.APPLICATION_JSON).content(getPlayAsJson()).characterEncoding("utf-8")).andReturn();
+		MvcResult result = mockMvc.perform(post("/play/v1").contentType(MediaType.APPLICATION_JSON).content(getPlayAsJson()).characterEncoding("utf-8")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("05:00 PM"));
 	}
 	
@@ -65,7 +65,7 @@ public class PlayControllerTest {
 	public void addPlayTestError() throws JsonProcessingException, Exception 
 	{
 		Mockito.when(playRepository.save(Mockito.any(Play.class))).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = mockMvc.perform(post("/play").contentType(MediaType.APPLICATION_JSON).content(getPlayAsJson()).characterEncoding("utf-8")).andReturn();
+		MvcResult result = mockMvc.perform(post("/play/v1").contentType(MediaType.APPLICATION_JSON).content(getPlayAsJson()).characterEncoding("utf-8")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Play Not Saved"));
 	}
 	
@@ -75,7 +75,7 @@ public class PlayControllerTest {
 		List<Play> playList = new ArrayList<>();
 		playList.add(getPlay());
 		Mockito.when(playRepository.findAll()).thenReturn(playList);
-		MvcResult result = this.mockMvc.perform(get("/play")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/play/v1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("05:00 PM"));
 	}
 	
@@ -84,7 +84,7 @@ public class PlayControllerTest {
 	{
 		List<Play> playList = new ArrayList<>();
 		Mockito.when(playRepository.findAll()).thenReturn(playList);
-		MvcResult result = this.mockMvc.perform(get("/play")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/play/v1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("No Play Found"));
 	}
 	
@@ -92,7 +92,7 @@ public class PlayControllerTest {
 	public void getAllPlayTestError() throws Exception
 	{
 		Mockito.when(playRepository.findAll()).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = this.mockMvc.perform(get("/play")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/play/v1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Failed to connect"));
 	}
 	
@@ -100,7 +100,7 @@ public class PlayControllerTest {
 	public void getPlayByIdTest() throws Exception
 	{
 		Mockito.when(playRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(getPlay()));
-		MvcResult result = mockMvc.perform(get("/play/1")).andReturn();
+		MvcResult result = mockMvc.perform(get("/play/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("05:00 PM"));
 	}
 	
@@ -108,7 +108,7 @@ public class PlayControllerTest {
 	public void getPlayByIdNotFoundTest() throws Exception
 	{
 		Mockito.when(playRepository.findById(Mockito.anyInt())).thenReturn(Optional.empty());
-		MvcResult result = mockMvc.perform(get("/play/1")).andReturn();
+		MvcResult result = mockMvc.perform(get("/play/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("No Play Found for he ID 1"));
 	}
     
@@ -116,7 +116,7 @@ public class PlayControllerTest {
 	public void getPlayByIdTestError() throws Exception
 	{
 		Mockito.when(playRepository.findById(Mockito.anyInt())).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = mockMvc.perform(get("/play/1")).andReturn();
+		MvcResult result = mockMvc.perform(get("/play/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Failed to connect"));
 	}
 	
@@ -124,7 +124,7 @@ public class PlayControllerTest {
 	public void updatePlayTest() throws Exception
 	{
 		Mockito.when(playRepository.save(Mockito.any(Play.class))).thenReturn(getPlay());
-		MvcResult result = mockMvc.perform(put("/play").contentType(MediaType.APPLICATION_JSON).content(getPlayAsJson()).characterEncoding("utf-8")).andReturn();
+		MvcResult result = mockMvc.perform(put("/play/v1").contentType(MediaType.APPLICATION_JSON).content(getPlayAsJson()).characterEncoding("utf-8")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("05:00 PM"));
 	}
 	
@@ -132,14 +132,14 @@ public class PlayControllerTest {
 	public void updatePlayTestError() throws JsonProcessingException, Exception
 	{
 		Mockito.when(playRepository.save(Mockito.any(Play.class))).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = mockMvc.perform(put("/play").contentType(MediaType.APPLICATION_JSON).content(getPlayAsJson()).characterEncoding("utf-8")).andReturn();
+		MvcResult result = mockMvc.perform(put("/play/v1").contentType(MediaType.APPLICATION_JSON).content(getPlayAsJson()).characterEncoding("utf-8")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Play Not Updated"));
 	}
 	
 	@Test
 	public void deletePlayTest() throws Exception
 	{
-		MvcResult result = this.mockMvc.perform(delete("/play/1")).andReturn();
+		MvcResult result = this.mockMvc.perform(delete("/play/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Play Deleted Successfull"));
 	}
 	

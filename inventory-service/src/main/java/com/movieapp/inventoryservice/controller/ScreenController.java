@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.movieapp.inventoryservice.dto.APISuccessResponseDTO;
@@ -24,6 +25,7 @@ import com.movieapp.inventoryservice.service.ScreenService;
 
 @RestController
 @CrossOrigin
+@RequestMapping(value="/screen/v1")
 public class ScreenController {
 
 	public static final String MESSAGE = "message";
@@ -34,7 +36,7 @@ public class ScreenController {
 
 	private static Logger logger = LoggerFactory.getLogger(ScreenController.class);
 	
-	@PostMapping("/screen")
+	@PostMapping
 	public ResponseEntity<APISuccessResponseDTO> addScreen(@RequestBody Screen screen) throws ServiceException {
 		logger.info("Add screen");
 		Screen screenDetails = screenService.addScreen(screen);
@@ -46,7 +48,7 @@ public class ScreenController {
 				.body(response);
 	}
 
-	@GetMapping("/screen")
+	@GetMapping
 	public ResponseEntity<APISuccessResponseDTO> getAllScreen() throws ApplicationException {
 		logger.info("Get all screens");
 		List<Screen> screenList = screenService.getAllScreen();
@@ -56,7 +58,7 @@ public class ScreenController {
 				.body(response);
 	}
 
-	@GetMapping("/screen/{screenId}")
+	@GetMapping("/{screenId}")
 	public ResponseEntity<APISuccessResponseDTO> getScreenById(@PathVariable int screenId)
 			throws ApplicationException	 {
 		logger.info("Get screen by id");
@@ -67,7 +69,7 @@ public class ScreenController {
 				.body(response);
 	}
 
-	@PutMapping("/screen")
+	@PutMapping
 	public ResponseEntity<APISuccessResponseDTO> updateScreen(@RequestBody Screen screen) throws ServiceException {
 		logger.info("Update screen details");
 		Screen screenDetails = screenService.updateScreen(screen);
@@ -77,7 +79,7 @@ public class ScreenController {
 				.body(response);
 	}
 
-	@DeleteMapping("/screen/{screenId}")
+	@DeleteMapping("/{screenId}")
 	public ResponseEntity<APISuccessResponseDTO> deleteScreen(@PathVariable int screenId) throws ServiceException {
 		logger.info("delete screen by id");
 		screenService.deleteScreen(screenId);

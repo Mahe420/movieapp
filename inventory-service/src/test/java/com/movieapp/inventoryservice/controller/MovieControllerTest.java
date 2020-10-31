@@ -63,7 +63,7 @@ public class MovieControllerTest {
 		Mockito.when(genreRepository.save(Mockito.any(Genre.class))).thenReturn(getGenre());
 		Mockito.when(castRepository.save(Mockito.any(Cast.class))).thenReturn(getCast());
 		Mockito.when(movieRepository.save(Mockito.any(Movie.class))).thenReturn(getMovie());
-		MvcResult result = mockMvc.perform(post("/movie").contentType(MediaType.APPLICATION_JSON)
+		MvcResult result = mockMvc.perform(post("/movie/v1").contentType(MediaType.APPLICATION_JSON)
 				.content(getMovieAsJson()).characterEncoding("utf-8")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("abc"));
 	}
@@ -71,7 +71,7 @@ public class MovieControllerTest {
 	@Test
 	public void addMovieTestError() throws JsonProcessingException, Exception {
 		Mockito.when(movieRepository.save(Mockito.any(Movie.class))).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = mockMvc.perform(post("/movie").contentType(MediaType.APPLICATION_JSON)
+		MvcResult result = mockMvc.perform(post("/movie/v1").contentType(MediaType.APPLICATION_JSON)
 				.content(getMovieAsJson()).characterEncoding("utf-8")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Movie Not Saved"));
 	}
@@ -81,7 +81,7 @@ public class MovieControllerTest {
 		List<Movie> movieList = new ArrayList<>();
 		movieList.add(getMovie());
 		Mockito.when(movieRepository.findAll()).thenReturn(movieList);
-		MvcResult result = this.mockMvc.perform(get("/movie")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/movie/v1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("abc"));
 	}
 
@@ -89,34 +89,34 @@ public class MovieControllerTest {
 	public void getAllMovieNotFoundTest() throws Exception {
 		List<Movie> movieList = new ArrayList<>();
 		Mockito.when(movieRepository.findAll()).thenReturn(movieList);
-		MvcResult result = this.mockMvc.perform(get("/movie")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/movie/v1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("No Movies Found"));
 	}
 
 	@Test
 	public void getAllMovieTestError() throws Exception {
 		Mockito.when(movieRepository.findAll()).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = this.mockMvc.perform(get("/movie")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/movie/v1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Failed to connect"));
 	}
 
 	@Test
 	public void getMovieByIdTest() throws Exception {
 		Mockito.when(movieRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(getMovie()));
-		MvcResult result = mockMvc.perform(get("/movie/1")).andReturn();
+		MvcResult result = mockMvc.perform(get("/movie/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("abc"));
 	}
 
 	@Test
 	public void getMovieByIdNotFoundTest() throws Exception {
 		Mockito.when(movieRepository.findById(Mockito.anyInt())).thenReturn(Optional.empty());
-		MvcResult result = mockMvc.perform(get("/movie/1")).andReturn();
+		MvcResult result = mockMvc.perform(get("/movie/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("No Movie Found for the ID 1"));
 	}
 	@Test
 	public void getMovieByIdTestError() throws Exception {
 		Mockito.when(movieRepository.findById(Mockito.anyInt())).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = this.mockMvc.perform(get("/movie/1")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/movie/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Failed to connect"));
 	}
 
@@ -126,7 +126,7 @@ public class MovieControllerTest {
 		Mockito.when(genreRepository.save(Mockito.any(Genre.class))).thenReturn(getGenre());
 		Mockito.when(castRepository.save(Mockito.any(Cast.class))).thenReturn(getCast());
 		Mockito.when(movieRepository.save(Mockito.any(Movie.class))).thenReturn(getMovie());
-		MvcResult result = mockMvc.perform(put("/movie").contentType(MediaType.APPLICATION_JSON)
+		MvcResult result = mockMvc.perform(put("/movie/v1").contentType(MediaType.APPLICATION_JSON)
 				.content(getMovieAsJson()).characterEncoding("utf-8")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("abc"));
 	}
@@ -134,14 +134,14 @@ public class MovieControllerTest {
 	@Test
 	public void updateMovieTestError() throws JsonProcessingException, Exception {
 		Mockito.when(movieRepository.save(Mockito.any(Movie.class))).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = mockMvc.perform(put("/movie").contentType(MediaType.APPLICATION_JSON)
+		MvcResult result = mockMvc.perform(put("/movie/v1").contentType(MediaType.APPLICATION_JSON)
 				.content(getMovieAsJson()).characterEncoding("utf-8")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains(""));
 	}
 
 	@Test
 	public void deleteMovieTest() throws Exception {
-		MvcResult result = this.mockMvc.perform(delete("/movie/1")).andReturn();
+		MvcResult result = this.mockMvc.perform(delete("/movie/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Movie deleted Successfull"));
 	}
 

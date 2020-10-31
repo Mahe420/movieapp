@@ -67,7 +67,7 @@ public class BookingControllerTest {
 		APISuccessResponseDTO api = new APISuccessResponseDTO();
 		api.setBody(play());
 		api.setStatusCode(200);
-		Mockito.when(restTemplate.exchange(ArgumentMatchers.matches("http://INVENTORY-SERVICE/play/1"),
+		Mockito.when(restTemplate.exchange(ArgumentMatchers.matches("http://INVENTORY-SERVICE/play/v1/1"),
 				Matchers.eq(HttpMethod.GET), Mockito.any(), ArgumentMatchers.any(Class.class)))
 				.thenReturn(new ResponseEntity<APISuccessResponseDTO>(api, HttpStatus.ACCEPTED));
 		Mockito.when(restTemplate.exchange(Mockito.anyString(), Matchers.eq(HttpMethod.PUT), Mockito.any(),
@@ -78,14 +78,14 @@ public class BookingControllerTest {
 	@Test
 	public void deleteBookingTestError() throws Exception {
 		Mockito.when(bookingRepository.findById(Mockito.any())).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = this.mockMvc.perform(delete("/booking/1")).andReturn();
+		MvcResult result = this.mockMvc.perform(delete("/booking/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Failed to connect"));
 	}
 
 	@Test
 	public void deleteBookingTestIdNotFound() throws Exception {
 		Mockito.when(bookingRepository.findById(Mockito.any())).thenReturn(Optional.empty());
-		MvcResult result = this.mockMvc.perform(delete("/booking/1")).andReturn();
+		MvcResult result = this.mockMvc.perform(delete("/booking/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("No Booking Found for the Id 1"));
 	}
 
@@ -94,7 +94,8 @@ public class BookingControllerTest {
 
 		Mockito.when(bookingRepository.findById(Mockito.any())).thenReturn(Optional.of(getBooking()));
 
-		MvcResult result = mockMvc.perform(delete("/booking/1")).andReturn();
+		MvcResult result = mockMvc.perform(delete("/booking/v1/1")).andReturn();
+		System.out.println(result.toString());
 		assertTrue(result.getResponse().getContentAsString().contains("Booking Deleted Successfull"));
 	}
 
@@ -102,7 +103,7 @@ public class BookingControllerTest {
 	public void addBookingTestError() throws Exception {
 		Mockito.when(bookingRepository.save(Mockito.any())).thenThrow(Mockito.mock(DataAccessException.class));
 		MvcResult result = this.mockMvc
-				.perform(post("/booking").contentType(MediaType.APPLICATION_JSON).content(bookingJson())).andReturn();
+				.perform(post("/booking/v1").contentType(MediaType.APPLICATION_JSON).content(bookingJson())).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Booking Not Saved"));
 	}
 
@@ -112,14 +113,14 @@ public class BookingControllerTest {
 		Mockito.when(bookingRepository.findById(Mockito.any())).thenReturn(Optional.of(getBooking()));
 
 		MvcResult result = mockMvc
-				.perform(post("/booking").contentType(MediaType.APPLICATION_JSON).content(bookingJson())).andReturn();
+				.perform(post("/booking/v1").contentType(MediaType.APPLICATION_JSON).content(bookingJson())).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Booking Saved Successfull"));
 	}
 
 	@Test
 	public void getBookingIdTestIdNotFound() throws Exception {
 		Mockito.when(bookingRepository.findById(Mockito.any())).thenReturn(Optional.empty());
-		MvcResult result = this.mockMvc.perform(get("/booking/1")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/booking/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("No Booking Found for the Id 1"));
 	}
 
@@ -128,27 +129,27 @@ public class BookingControllerTest {
 		APISuccessResponseDTO api = new APISuccessResponseDTO();
 		api.setBody(user());
 		api.setStatusCode(200);
-		Mockito.when(restTemplate.exchange(ArgumentMatchers.matches("http://USER-SERVICE/users/1"),
+		Mockito.when(restTemplate.exchange(ArgumentMatchers.matches("http://USER-SERVICE/users/v1/1"),
 				Matchers.eq(HttpMethod.GET), Mockito.any(), ArgumentMatchers.any(Class.class)))
 				.thenReturn(new ResponseEntity<APISuccessResponseDTO>(api, HttpStatus.ACCEPTED));
 
 		Mockito.when(bookingRepository.findById(Mockito.any())).thenReturn(Optional.of(getBooking()));
 
-		MvcResult result = mockMvc.perform(get("/booking/1")).andReturn();
+		MvcResult result = mockMvc.perform(get("/booking/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Get Booking by Id Successfull"));
 	}
 
 	@Test
 	public void getAllBookingTestError() throws Exception {
 		Mockito.when(bookingRepository.findAll()).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = this.mockMvc.perform(get("/booking")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/booking/v1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Failed to connect"));
 	}
 
 	@Test
 	public void getAllBookingTestIdNotFound() throws Exception {
 		Mockito.when(bookingRepository.findAll()).thenReturn(new ArrayList());
-		MvcResult result = this.mockMvc.perform(get("/booking")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/booking/v1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("No Bookings Found"));
 	}
 
@@ -162,17 +163,17 @@ public class BookingControllerTest {
 		list1.add(user());
 		api.setBody(list1);
 		api.setStatusCode(200);
-		Mockito.when(restTemplate.exchange(ArgumentMatchers.matches("http://USER-SERVICE/users/"),
+		Mockito.when(restTemplate.exchange(ArgumentMatchers.matches("http://USER-SERVICE/users/v1/"),
 				Matchers.eq(HttpMethod.GET), Mockito.any(), ArgumentMatchers.any(Class.class)))
 				.thenReturn(new ResponseEntity<APISuccessResponseDTO>(api, HttpStatus.ACCEPTED));
 		List list2 = new ArrayList();
 		list2.add(play());
 		api.setBody(list2);
 		api.setStatusCode(200);
-		Mockito.when(restTemplate.exchange(ArgumentMatchers.matches("http://INVENTORY-SERVICE/play/"),
+		Mockito.when(restTemplate.exchange(ArgumentMatchers.matches("http://INVENTORY-SERVICE/play/v1/"),
 				Matchers.eq(HttpMethod.GET), Mockito.any(), ArgumentMatchers.any(Class.class)))
 				.thenReturn(new ResponseEntity<APISuccessResponseDTO>(api, HttpStatus.ACCEPTED));
-		MvcResult result = this.mockMvc.perform(get("/booking")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/booking/v1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Get all Booking Successfull"));
 
 	}
@@ -186,17 +187,17 @@ public class BookingControllerTest {
 		List list1 = new ArrayList();
 		api.setBody(list);
 		api.setStatusCode(200);
-		Mockito.when(restTemplate.exchange(ArgumentMatchers.matches("http://USER-SERVICE/users/"),
+		Mockito.when(restTemplate.exchange(ArgumentMatchers.matches("http://USER-SERVICE/users/v1/"),
 				Matchers.eq(HttpMethod.GET), Mockito.any(), ArgumentMatchers.any(Class.class)))
 				.thenReturn(new ResponseEntity<APISuccessResponseDTO>(api, HttpStatus.ACCEPTED));
 		List list2 = new ArrayList();
 		list2.add(play());
 		api.setBody(list);
 		api.setStatusCode(200);
-		Mockito.when(restTemplate.exchange(ArgumentMatchers.matches("http://INVENTORY-SERVICE/play/"),
+		Mockito.when(restTemplate.exchange(ArgumentMatchers.matches("http://INVENTORY-SERVICE/play/v1/"),
 				Matchers.eq(HttpMethod.GET), Mockito.any(), ArgumentMatchers.any(Class.class)))
 				.thenReturn(new ResponseEntity<APISuccessResponseDTO>(api, HttpStatus.ACCEPTED));
-		MvcResult result = this.mockMvc.perform(get("/booking")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/booking/v1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Error in id of user or play"));
 
 	}

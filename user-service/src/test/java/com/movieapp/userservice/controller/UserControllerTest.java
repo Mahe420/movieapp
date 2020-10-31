@@ -51,7 +51,7 @@ public class UserControllerTest {
 	@Test
 	public void addUserTest() throws JsonProcessingException, Exception {
 		Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(getUser());
-		MvcResult result = mockMvc.perform(post("/signup").contentType(MediaType.APPLICATION_JSON)
+		MvcResult result = mockMvc.perform(post("/users/v1/signup").contentType(MediaType.APPLICATION_JSON)
 				.content(getUserAsJson()).characterEncoding("utf-8")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("mahe"));
 	}
@@ -59,7 +59,7 @@ public class UserControllerTest {
 	@Test
 	public void UserNameAlreadyExistsTest() throws JsonProcessingException, Exception {
 		Mockito.when(userRepository.findUserByuserName(Mockito.anyString())).thenReturn(Optional.of(getUser()));
-		MvcResult result = mockMvc.perform(post("/signup").contentType(MediaType.APPLICATION_JSON)
+		MvcResult result = mockMvc.perform(post("/users/v1/signup").contentType(MediaType.APPLICATION_JSON)
 				.content(getUserAsJson()).characterEncoding("utf-8")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Username Already Exists"));
 	}
@@ -67,7 +67,7 @@ public class UserControllerTest {
 	@Test
 	public void addUserTestError() throws JsonProcessingException, Exception {
 		Mockito.when(userRepository.save(Mockito.any(User.class))).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = mockMvc.perform(post("/signup").contentType(MediaType.APPLICATION_JSON)
+		MvcResult result = mockMvc.perform(post("/users/v1/signup").contentType(MediaType.APPLICATION_JSON)
 				.content(getUserAsJson()).characterEncoding("utf-8")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("User Not Saved"));
 	}
@@ -78,7 +78,7 @@ public class UserControllerTest {
 		List<User> userList = new ArrayList<>();
 		userList.add(getUser());
 		Mockito.when(userRepository.findAll()).thenReturn(userList);
-		MvcResult result = this.mockMvc.perform(get("/users")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/users/v1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("mahe"));
 	}
 
@@ -87,7 +87,7 @@ public class UserControllerTest {
 	public void getAllUserNotFoundTest() throws Exception {
 		List<User> userList = new ArrayList<>();
 		Mockito.when(userRepository.findAll()).thenReturn(userList);
-		MvcResult result = this.mockMvc.perform(get("/users")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/users/v1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("No User Found"));
 	}
 
@@ -95,7 +95,7 @@ public class UserControllerTest {
 	@WithMockUser(username = "mahe", roles = { "ADMIN" })
 	public void getAllUserTestError() throws Exception {
 		Mockito.when(userRepository.findAll()).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = this.mockMvc.perform(get("/users")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/users/v1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Failed to connect"));
 	}
 
@@ -103,7 +103,7 @@ public class UserControllerTest {
 	@WithMockUser(username = "mahe", roles = { "ADMIN" })
 	public void getUserByIdTest() throws Exception {
 		Mockito.when(userRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(getUser()));
-		MvcResult result = mockMvc.perform(get("/users/1")).andReturn();
+		MvcResult result = mockMvc.perform(get("/users/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("mahe"));
 	}
 
@@ -111,7 +111,7 @@ public class UserControllerTest {
 	@WithMockUser(username = "mahe", roles = { "ADMIN" })
 	public void getUserByIdNotFoundTest() throws Exception {
 		Mockito.when(userRepository.findById(Mockito.anyInt())).thenReturn(Optional.empty());
-		MvcResult result = mockMvc.perform(get("/users/1")).andReturn();
+		MvcResult result = mockMvc.perform(get("/users/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("No User Found for the ID 1"));
 	}
 
@@ -119,7 +119,7 @@ public class UserControllerTest {
 	@WithMockUser(username = "mahe", roles = { "ADMIN" })
 	public void getUserByIdTestError() throws Exception {
 		Mockito.when(userRepository.findById(Mockito.anyInt())).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = this.mockMvc.perform(get("/users/1")).andReturn();
+		MvcResult result = this.mockMvc.perform(get("/users/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("Failed to connect"));
 	}
 
@@ -127,7 +127,7 @@ public class UserControllerTest {
 	@WithMockUser(username = "mahe", roles = { "USER" })
 	public void updateUserTest() throws JsonProcessingException, Exception {
 		Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(getUser());
-		MvcResult result = mockMvc.perform(put("/users").contentType(MediaType.APPLICATION_JSON)
+		MvcResult result = mockMvc.perform(put("/users/v1").contentType(MediaType.APPLICATION_JSON)
 				.content(getUserAsJson()).characterEncoding("utf-8")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("mahe"));
 	}
@@ -136,7 +136,7 @@ public class UserControllerTest {
 	@WithMockUser(username = "mahe", roles = { "USER" })
 	public void updateUserTestError() throws JsonProcessingException, Exception {
 		Mockito.when(userRepository.save(Mockito.any(User.class))).thenThrow(Mockito.mock(DataAccessException.class));
-		MvcResult result = mockMvc.perform(put("/users").contentType(MediaType.APPLICATION_JSON)
+		MvcResult result = mockMvc.perform(put("/users/v1").contentType(MediaType.APPLICATION_JSON)
 				.content(getUserAsJson()).characterEncoding("utf-8")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("User Not Updated"));
 	}
@@ -144,7 +144,7 @@ public class UserControllerTest {
 	@Test
 	@WithMockUser(username = "mahe", roles = { "USER" })
 	public void deleteUserTest() throws Exception {
-		MvcResult result = this.mockMvc.perform(delete("/users/1")).andReturn();
+		MvcResult result = this.mockMvc.perform(delete("/users/v1/1")).andReturn();
 		assertTrue(result.getResponse().getContentAsString().contains("User Deleted Successfull"));
 	}
 

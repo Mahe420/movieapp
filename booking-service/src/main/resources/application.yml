@@ -17,10 +17,10 @@ spring:
     name: booking-service
 
 user:
-  url: http://USER-SERVICE/users/
+  url: http://USER-SERVICE/users/v1/
 
 play:
-  url: http://INVENTORY-SERVICE/play/
+  url: http://INVENTORY-SERVICE/play/v1/
       
 security:
   oauth2:

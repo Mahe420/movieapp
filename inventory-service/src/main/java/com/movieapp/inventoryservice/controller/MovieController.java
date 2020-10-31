@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.movieapp.inventoryservice.dto.APISuccessResponseDTO;
@@ -24,6 +25,7 @@ import com.movieapp.inventoryservice.service.MovieService;
 
 @RestController
 @CrossOrigin
+@RequestMapping(value="/movie/v1")
 public class MovieController {
 
 	public static final String MESSAGE = "message";
@@ -34,7 +36,7 @@ public class MovieController {
 
 	private static Logger logger = LoggerFactory.getLogger(MovieController.class);
 
-	@PostMapping("/movie")
+	@PostMapping
 	public ResponseEntity<APISuccessResponseDTO> addMovie(@RequestBody Movie movie) throws ServiceException {
 		logger.info("Entered to insert a movie");
 		Movie movieDetails = movieService.addMovie(movie);
@@ -44,7 +46,7 @@ public class MovieController {
 				.body(response);
 	}
 
-	@GetMapping("/movie")
+	@GetMapping
 	public ResponseEntity<APISuccessResponseDTO> getAllMovies() throws ApplicationException {
 		logger.info("To get all movies");
 		List<Movie> movieList = movieService.getAllMovies();
@@ -54,7 +56,7 @@ public class MovieController {
 				.body(response);
 	}
 
-	@GetMapping("/movie/{movieId}")
+	@GetMapping("/{movieId}")
 	public ResponseEntity<APISuccessResponseDTO> getMovieById(@PathVariable int movieId) throws ApplicationException {
 		logger.info("To get movie by id");
 		Movie movie = movieService.getMovieById(movieId);
@@ -64,7 +66,7 @@ public class MovieController {
 				.body(response);
 	}
 
-	@PutMapping("/movie")
+	@PutMapping
 	public ResponseEntity<APISuccessResponseDTO> updateMovie(@RequestBody Movie movie) throws ServiceException {
 		logger.info("Update movie details");
 		Movie movieDetails = movieService.updateMovie(movie);
@@ -74,7 +76,7 @@ public class MovieController {
 				.body(response);
 	}
 
-	@DeleteMapping("/movie/{movieId}")
+	@DeleteMapping("/{movieId}")
 	public ResponseEntity<APISuccessResponseDTO> deleteMovie(@PathVariable int movieId) throws ServiceException {
 		logger.info("Delete movie by id");
 		movieService.deleteMovie(movieId);

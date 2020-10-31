@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.movieapp.bookingservice.dto.APISuccessResponseDTO;
@@ -27,6 +28,7 @@ import com.movieapp.bookingservice.service.BookingService;
 
 @RestController
 @CrossOrigin
+@RequestMapping(value="/booking/v1")
 public class BookingController {
 	
 	public static final String MESSAGE="message";
@@ -36,7 +38,7 @@ public class BookingController {
 	
 	private static Logger logger = LoggerFactory.getLogger(BookingController.class);
 	
-	@PostMapping("/booking")
+	@PostMapping
 	public ResponseEntity<APISuccessResponseDTO> addBooking(@RequestBody Booking booking) throws ApplicationException 
 	{
 		logger.info("Entered to add booking");
@@ -49,7 +51,7 @@ public class BookingController {
 				.body(response);
 	}
 
-	@GetMapping("/booking")
+	@GetMapping
 	public ResponseEntity<APISuccessResponseDTO> getAllBooking(HttpServletRequest req) throws ApplicationException {
 		
 		logger.info("Entered to Get all the booking details");
@@ -60,7 +62,7 @@ public class BookingController {
 				.body(response);
 	}
 
-	@GetMapping("/booking/{bookingId}")
+	@GetMapping("/{bookingId}")
 	public ResponseEntity<APISuccessResponseDTO> getBookingById(@PathVariable int bookingId) throws ApplicationException  {
 		
 		logger.info("Entered to get booking by id");
@@ -74,7 +76,7 @@ public class BookingController {
 	}
 
 
-	@DeleteMapping("/booking/{bookingId}")
+	@DeleteMapping("/{bookingId}")
 	public ResponseEntity<APISuccessResponseDTO> deleteBooking(@PathVariable int bookingId) throws ApplicationException {
 		logger.info("Entered to delete booking ");
 		bookingService.deleteBooking(bookingId);
