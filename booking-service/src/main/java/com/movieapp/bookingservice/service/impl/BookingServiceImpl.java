@@ -1,6 +1,7 @@
 package com.movieapp.bookingservice.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.kafka.KafkaException;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ import com.movieapp.bookingservice.exception.ApplicationException;
 import com.movieapp.bookingservice.exception.ServiceException;
 import com.movieapp.bookingservice.repository.BookingRepository;
 import com.movieapp.bookingservice.service.BookingService;
+import com.netflix.infix.lang.infix.antlr.EventFilterParser.exists_predicate_return;
 
 @Service
 @Transactional
@@ -91,11 +94,12 @@ public class BookingServiceImpl implements BookingService {
 		}
 	}
 
-	private void sendMessage(Booking booking) {
+	private void sendMessage(Booking booking) throws ServiceException {
 		try {
 			kafkaTemplate.send(topicName, booking);
-		} catch (Exception e) {
-			logger.error("Error in Kafka {}", e.getMessage());
+		} catch (KafkaException ex) {
+			logger.error("Error in Kafka {}", ex.getMessage());
+			throw new ServiceException("Error in Kafka ", ex.getCause());
 		}
 	}
 
@@ -123,15 +127,10 @@ public class BookingServiceImpl implements BookingService {
 			return bookingList.stream().map(booking -> {
 				UserDTO userDTO = new UserDTO();
 				PlayDTO playDTO = new PlayDTO();
-				try {
-					userDTO = userDTOList.stream().filter(user -> user.getId() == booking.getUserid()).findAny()
-							.orElseThrow(() -> new ServiceException("User id not present"));
-					playDTO = playDTOList.stream().filter(play -> play.getId() == booking.getPlayid()).findAny()
-							.orElseThrow(() -> new ServiceException("Error in play id"));
-				} catch (ServiceException ex) {
-					logger.error("Error in convertion in streams");
-					throw new RuntimeException("Error in id of user or play");
-				}
+
+				userDTO = userDTOList.stream().filter(user -> user.getId() == booking.getUserid()).findAny().get();
+				playDTO = playDTOList.stream().filter(play -> play.getId() == booking.getPlayid()).findAny().get();
+
 				return new BookingDTO(booking.getId(), booking.getTotalPrice(), booking.getNoOfBookedSeats(), userDTO,
 						playDTO);
 			}).collect(Collectors.toList());
@@ -204,7 +203,7 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	public static void checkStatus(APISuccessResponseDTO response) throws ApplicationException {
-		logger.info("Response from other api {}", response.toString());
+		logger.info("Response from other api {}", response);
 		if (response.getStatusCode() != 200) {
 			logger.error("Error in calling other service");
 			throw new ApplicationException("Error in calling service message:" + response.getBody());
