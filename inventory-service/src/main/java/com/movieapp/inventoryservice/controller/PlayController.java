@@ -36,6 +36,14 @@ public class PlayController {
 
 	private static Logger logger = LoggerFactory.getLogger(PlayController.class);
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param play
+	 * @return
+	 * @throws ServiceException
+	 * 
+	 * Post API to add play
+	 */
 	@PostMapping
 	public ResponseEntity<APISuccessResponseDTO> addPlay(@RequestBody Play play) throws ServiceException {
 		logger.info("Add play details");
@@ -46,6 +54,13 @@ public class PlayController {
 				.body(response);
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @return
+	 * @throws ApplicationException
+	 * 
+	 * Get API to retrieve all play details
+	 */
 	@GetMapping
 	public ResponseEntity<APISuccessResponseDTO> getAllPlay() throws ApplicationException {
 		logger.info("Get all play details");
@@ -56,6 +71,14 @@ public class PlayController {
 				.body(response);
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param playId
+	 * @return
+	 * @throws ApplicationException
+	 * 
+	 * Get API to retrieve play based on id
+	 */
 	@GetMapping("/{playId}")
 	public ResponseEntity<APISuccessResponseDTO> getPlayById(@PathVariable int playId) throws ApplicationException {
 		logger.info("Get play details by id");
@@ -66,6 +89,14 @@ public class PlayController {
 				.body(response);
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param play
+	 * @return
+	 * @throws ServiceException
+	 * 
+	 * Put API to update play
+	 */
 	@PutMapping
 	public ResponseEntity<APISuccessResponseDTO> updatePlay(@RequestBody Play play) throws ServiceException {
 		logger.info("Update play details");
@@ -76,6 +107,14 @@ public class PlayController {
 				.body(response);
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param playId
+	 * @return
+	 * @throws ServiceException
+	 * 
+	 * Delete API to delete play
+	 */
 	@DeleteMapping("/{playId}")
 	public ResponseEntity<APISuccessResponseDTO> deletePlay(@PathVariable int playId) throws ServiceException {
 		logger.info("Delete play by id");
@@ -86,6 +125,14 @@ public class PlayController {
 				.body(response);
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param object
+	 * @param message
+	 * @return
+	 * 
+	 * create response using object and message
+	 */
 	private APISuccessResponseDTO createResponse(Object object, String message) {
 		APISuccessResponseDTO response = new APISuccessResponseDTO();
 		response.setHttpStatus(HttpStatus.ACCEPTED);

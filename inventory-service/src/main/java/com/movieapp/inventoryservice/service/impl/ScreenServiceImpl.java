@@ -25,6 +25,14 @@ public class ScreenServiceImpl implements ScreenService {
 	TheatreRepository theatreRepository;
 
 	public static final String ERROR_CONNECT="Failed to connect";
+	/**
+	 * @author Mahendran Dayalan
+	 * @param screen
+	 * @return Screen
+	 * @throws ServiceException
+	 * 
+	 * To add screen details to database
+	 */
 	@Override
 	public Screen addScreen(Screen screen) throws ServiceException {
 		try {
@@ -36,6 +44,13 @@ public class ScreenServiceImpl implements ScreenService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @return List<Screen>
+	 * @throws ApplicationException
+	 * 
+	 * To retrieve all screen details in database
+	 */
 	@Override
 	public List<Screen> getAllScreen() throws ApplicationException {
 		try {
@@ -49,6 +64,14 @@ public class ScreenServiceImpl implements ScreenService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param screen
+	 * @return Screen
+	 * @throws ServiceException
+	 * 
+	 * Update a particular screen detail
+	 */
 	@Override
 	public Screen updateScreen(Screen screen) throws ServiceException {
 		try {
@@ -60,6 +83,13 @@ public class ScreenServiceImpl implements ScreenService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param screenId
+	 * @throws ServiceException
+	 * 
+	 * Delete screen based on screen id
+	 */
 	@Override
 	public void deleteScreen(int screenId) throws ServiceException {
 		try {
@@ -69,6 +99,14 @@ public class ScreenServiceImpl implements ScreenService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param screenId
+	 * @return Screen
+	 * @throws ApplicationException
+	 * 
+	 * Get a screen detail based on screen id
+	 */
 	@Override
 	public Screen getScreenById(int screenId) throws ApplicationException {
 		try {

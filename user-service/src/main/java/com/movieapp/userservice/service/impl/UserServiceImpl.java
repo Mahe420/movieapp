@@ -33,11 +33,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param name
+	 * @return UserDetails
+	 * 
+	 * Get user based on there name
+	 */
 	@Override
 	public UserDetails loadUserByUsername(String name) {
 		logger.info("To load user by name");
-		User user=new User();
-		user = userRepository.findUserByuserName(name)
+		User user = userRepository.findUserByuserName(name)
 				.orElseThrow(() -> new UsernameNotFoundException("UserName not found "));
 		UserDetails userDetails = new AuthUserDetails(user);
 		new AccountStatusUserDetailsChecker().check(userDetails);
@@ -45,6 +51,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		return userDetails;
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param user
+	 * @return User
+	 * @throws ApplicationException
+	 * 
+	 * Add user to the database
+	 */
 	@Override
 	public User addUser(User user) throws ApplicationException {
 		try {
@@ -60,6 +74,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @return List<DTO>
+	 * @throws ApplicationException
+	 * 
+	 * Get all users in the database
+	 * 
+	 */
 	@Override
 	public List<UserDTO> getAllUser() throws ApplicationException {
 		try {
@@ -76,6 +98,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param userId
+	 * @return
+	 * @throws ApplicationException
+	 * 
+	 * Get one user based on user id
+	 */
 	@Override
 	public UserDTO getUserById(int userId) throws ApplicationException {
 		try {
@@ -88,6 +118,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param userId
+	 * @throws ServiceException
+	 * 
+	 * Delete user using user id
+	 */
 	@Override
 	public void deleteUser(int userId) throws ServiceException {
 		try {
@@ -97,6 +134,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param user
+	 * @return
+	 * @throws ServiceException
+	 * 
+	 * Update a user in database
+	 */
 	@Override
 	public User updateUser(User user) throws ServiceException {
 		try {

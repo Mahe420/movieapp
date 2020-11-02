@@ -33,6 +33,13 @@ public class KafkaConsumer {
 
 	private static final Logger logger = LoggerFactory.getLogger(KafkaConsumer.class);
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param booking
+	 * @throws Exception
+	 * 
+	 * Consume the message sent from other services
+	 */
 	@KafkaListener(topics = "${kafka.topic.name}", groupId = "${kafka.consumer.group.id")
 	public void receiveKafkaMessage(Booking booking) throws Exception {
 

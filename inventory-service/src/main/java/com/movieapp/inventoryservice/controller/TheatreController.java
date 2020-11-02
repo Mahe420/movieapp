@@ -36,6 +36,14 @@ public class TheatreController {
 	
 	private static Logger logger = LoggerFactory.getLogger(TheatreController.class);
 	
+	/**
+	 * @author Mahendran Dayalan
+	 * @param theatre
+	 * @return
+	 * @throws ServiceException
+	 * 
+	 * Post API to add theatre
+	 */
 	@PostMapping
 	public ResponseEntity<APISuccessResponseDTO> addTheatre(@RequestBody Theatre theatre ) throws ServiceException
 	{
@@ -46,6 +54,13 @@ public class TheatreController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED)).body(response);	
 	}
 	
+	/**
+	 * @author Mahendran Dayalan
+	 * @return
+	 * @throws ApplicationException
+	 * 
+	 * Get API to retrieve all theatre details
+	 */
 	@GetMapping
 	public ResponseEntity<APISuccessResponseDTO> getAllTheatre() throws ApplicationException {
 		logger.info("Get all theatre values");
@@ -55,6 +70,13 @@ public class TheatreController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED)).body(response);
 	}
 	
+	/**
+	 * @author Mahendran Dayalan
+	 * @param theatreId
+	 * @return
+	 * @throws ApplicationException
+	 * Get API to retrieve theatre based on ID
+	 */
 	@GetMapping("/{theatreId}")
 	public ResponseEntity<APISuccessResponseDTO> getTheatreById(@PathVariable int theatreId) throws ApplicationException {
 		logger.info("Get theatre by id");
@@ -64,6 +86,14 @@ public class TheatreController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED)).body(response);
 	}
      
+	/**
+	 * @author Mahendran Dayalan
+	 * @param theatre
+	 * @return
+	 * @throws ServiceException
+	 * 
+	 * Put API to update theatre 
+	 */
 	@PutMapping
 	public ResponseEntity<APISuccessResponseDTO> updateTheatre(@RequestBody Theatre theatre) throws ServiceException
 	{
@@ -74,6 +104,13 @@ public class TheatreController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED)).body(response);	
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param theatreId
+	 * @return
+	 * @throws ServiceException
+	 * Delete API to delete theatre details
+	 */
 	@DeleteMapping("/{theatreId}")
 	public ResponseEntity<APISuccessResponseDTO> deleteTheatre(@PathVariable int theatreId) throws ServiceException
 	{
@@ -86,6 +123,15 @@ public class TheatreController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).header(MESSAGE, String.valueOf(HttpStatus.ACCEPTED)).body(response);
 	}
 	
+	
+	/**
+	 * @author Mahendran Dayalan
+	 * @param object
+	 * @param message
+	 * @return
+	 * 
+	 * create response using object and message
+	 */
 	private APISuccessResponseDTO createResponse(Object object,String message) {
 		APISuccessResponseDTO response = new APISuccessResponseDTO();
 		response.setHttpStatus(HttpStatus.ACCEPTED);

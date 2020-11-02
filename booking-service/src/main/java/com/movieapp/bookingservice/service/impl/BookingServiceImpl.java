@@ -62,7 +62,7 @@ public class BookingServiceImpl implements BookingService {
 	/**
 	 * @author Mahendran Dayalan
 	 * @param booking
-	 * @return
+	 * @return Booking
 	 * @throws ApplicationException
 	 * 
 	 * To add Booking to the database
@@ -118,7 +118,7 @@ public class BookingServiceImpl implements BookingService {
 
 	/**
 	 * @author Mahendran Dayalan
-	 * @return
+	 * @return List<BookingDTO>
 	 * @throws ApplicationException
 	 * 
 	 * Get all the booking details
@@ -164,7 +164,7 @@ public class BookingServiceImpl implements BookingService {
 	/**
 	 * @author Mahendran Dayalan
 	 * @param bookingId
-	 * @return
+	 * @return BookingDTO
 	 * @throws ApplicationException
 	 * 
 	 * Get the booking details based on ID

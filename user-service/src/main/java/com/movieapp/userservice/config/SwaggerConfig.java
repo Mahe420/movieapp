@@ -26,6 +26,11 @@ import springfox.documentation.swagger.web.SecurityConfiguration;
 import springfox.documentation.swagger.web.SecurityConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * @author Mahendran Dayalan
+ *
+ * Swagger configuartion
+ */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {

@@ -36,6 +36,14 @@ public class ScreenController {
 
 	private static Logger logger = LoggerFactory.getLogger(ScreenController.class);
 	
+	/**
+	 * @author Mahendran Dayalan
+	 * @param screen
+	 * @return
+	 * @throws ServiceException
+	 * 
+	 * Post API to add screen
+	 */
 	@PostMapping
 	public ResponseEntity<APISuccessResponseDTO> addScreen(@RequestBody Screen screen) throws ServiceException {
 		logger.info("Add screen");
@@ -48,6 +56,12 @@ public class ScreenController {
 				.body(response);
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @return
+	 * @throws ApplicationException
+	 * Get API to retrieve all screen details
+	 */
 	@GetMapping
 	public ResponseEntity<APISuccessResponseDTO> getAllScreen() throws ApplicationException {
 		logger.info("Get all screens");
@@ -58,6 +72,14 @@ public class ScreenController {
 				.body(response);
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param screenId
+	 * @return
+	 * @throws ApplicationException
+	 * 
+	 * Get API to retrieve screen based on ID
+	 */
 	@GetMapping("/{screenId}")
 	public ResponseEntity<APISuccessResponseDTO> getScreenById(@PathVariable int screenId)
 			throws ApplicationException	 {
@@ -69,6 +91,14 @@ public class ScreenController {
 				.body(response);
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param screen
+	 * @return
+	 * @throws ServiceException
+	 * 
+	 * Put API to update screen details
+	 */
 	@PutMapping
 	public ResponseEntity<APISuccessResponseDTO> updateScreen(@RequestBody Screen screen) throws ServiceException {
 		logger.info("Update screen details");
@@ -79,6 +109,14 @@ public class ScreenController {
 				.body(response);
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param screenId
+	 * @return
+	 * @throws ServiceException
+	 * 
+	 * Delete API to delete screen
+	 */
 	@DeleteMapping("/{screenId}")
 	public ResponseEntity<APISuccessResponseDTO> deleteScreen(@PathVariable int screenId) throws ServiceException {
 		logger.info("delete screen by id");
@@ -89,6 +127,15 @@ public class ScreenController {
 				.body(response);
 	}
 
+	
+	/**
+	 * @author Mahendran Dayalan
+	 * @param object
+	 * @param message
+	 * @return
+	 * 
+	 * create response using object and message
+	 */
 	private APISuccessResponseDTO createResponse(Object object,String message) {
 		APISuccessResponseDTO response = new APISuccessResponseDTO();
 		response.setHttpStatus(HttpStatus.ACCEPTED);

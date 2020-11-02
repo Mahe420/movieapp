@@ -22,6 +22,13 @@ public class SearchController {
 	@Autowired
     private SearchBuilder searchBuilder;
 
+    /**
+     * @author Mahendran Dayalan
+     * @param searchText
+     * @return ResponseEntity
+     * 
+     * Get API to search data in elastic search
+     */
     @GetMapping(value = "/{searchText}")
     public ResponseEntity<?> getAll(@PathVariable final String searchText) {
     	

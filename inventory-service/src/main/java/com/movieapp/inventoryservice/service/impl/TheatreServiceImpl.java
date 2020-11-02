@@ -30,6 +30,14 @@ public class TheatreServiceImpl implements TheatreService {
 	@Autowired
 	LocationRepository locationRepository;
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param theatre
+	 * @return Theatre
+	 * @throws ServiceException
+	 * 
+	 * Add theatre details to database
+	 */
 	@Override
 	public Theatre addTheatre(Theatre theatre) throws ServiceException {
 		try {
@@ -43,6 +51,13 @@ public class TheatreServiceImpl implements TheatreService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @return List<Theatre>
+	 * @throws ApplicationException
+	 * 
+	 * Get all theatre details
+	 */
 	@Override
 	public List<Theatre> getAlltheatre() throws ApplicationException {
 		try {
@@ -56,6 +71,14 @@ public class TheatreServiceImpl implements TheatreService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param theatre
+	 * @return Theatre
+	 * @throws ServiceException
+	 * 
+	 * Update a particular theatre detail
+	 */
 	@Override
 	public Theatre updateTheatre(Theatre theatre) throws ServiceException {
 		try {
@@ -69,6 +92,13 @@ public class TheatreServiceImpl implements TheatreService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param theatreId
+	 * @throws ServiceException
+	 * 
+	 * delete theatre based on theatre id
+	 */
 	@Override
 	public void deleteTheatre(int theatreId) throws ServiceException {
 		try {
@@ -78,6 +108,14 @@ public class TheatreServiceImpl implements TheatreService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param theatreId
+	 * @return Theatre
+	 * @throws ApplicationException
+	 * 
+	 * Get theatre based on theatre id
+	 */
 	@Override
 	public Theatre getTheatreById(int theatreId) throws ApplicationException {
 		try {

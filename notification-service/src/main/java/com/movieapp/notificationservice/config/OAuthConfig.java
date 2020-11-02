@@ -11,6 +11,11 @@ import org.springframework.security.oauth2.client.token.DefaultAccessTokenReques
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 
+/**
+ * @author Mahendran Dayalan
+ *
+ * OAuth configuration
+ */
 @EnableOAuth2Client
 @Configuration
 public class OAuthConfig {

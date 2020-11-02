@@ -42,7 +42,7 @@ public class BookingController {
 	/**
 	 * @author Mahendran Dayalan
 	 * @param booking
-	 * @return
+	 * @return ResponseEntity<APISuccessResponseDTO>
 	 * @throws ApplicationException
 	 * 
 	 * 
@@ -64,7 +64,7 @@ public class BookingController {
 	
 	/**
 	 * @author Mahendran Dayalan
-	 * @return
+	 * @return ResponseEntity<APISuccessResponseDTO>
 	 * @throws ApplicationException
 	 * 
 	 * Get API to get all booking details
@@ -83,7 +83,7 @@ public class BookingController {
 	/**
 	 * @author Mahendran Dayalan
 	 * @param bookingId
-	 * @return
+	 * @return ResponseEntity<APISuccessResponseDTO>
 	 * @throws ApplicationException
 	 * 
 	 * Get API to get booking details by id
@@ -105,7 +105,7 @@ public class BookingController {
 	/**
 	 * @author Mahendran Dayalan
 	 * @param bookingId
-	 * @return
+	 * @return ResponseEntity<APISuccessResponseDTO>
 	 * @throws ApplicationException
 	 * 
 	 * Delete API to delete booking details
@@ -126,7 +126,7 @@ public class BookingController {
 	 * @author Mahendran Dayalan
 	 * @param object
 	 * @param message
-	 * @return
+	 * @return APISuccessResponseDTO
 	 * 
 	 * To create Response using Object and message
 	 */

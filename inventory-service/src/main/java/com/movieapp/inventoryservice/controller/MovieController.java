@@ -36,6 +36,14 @@ public class MovieController {
 
 	private static Logger logger = LoggerFactory.getLogger(MovieController.class);
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param movie
+	 * @return ResponseEntity<APISuccessResponseDTO>
+	 * @throws ServiceException
+	 * 
+	 * Post API to add Movies
+	 */
 	@PostMapping
 	public ResponseEntity<APISuccessResponseDTO> addMovie(@RequestBody Movie movie) throws ServiceException {
 		logger.info("Entered to insert a movie");
@@ -46,6 +54,13 @@ public class MovieController {
 				.body(response);
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @return ResponseEntity<APISuccessResponseDTO>
+	 * @throws ApplicationException
+	 * 
+	 * Get API to get all movie details
+	 */
 	@GetMapping
 	public ResponseEntity<APISuccessResponseDTO> getAllMovies() throws ApplicationException {
 		logger.info("To get all movies");
@@ -56,6 +71,14 @@ public class MovieController {
 				.body(response);
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param movieId
+	 * @return ResponseEntity<APISuccessResponseDTO>
+	 * @throws ApplicationException
+	 * 
+	 * Get API to retrive movie based on ID
+	 */
 	@GetMapping("/{movieId}")
 	public ResponseEntity<APISuccessResponseDTO> getMovieById(@PathVariable int movieId) throws ApplicationException {
 		logger.info("To get movie by id");
@@ -66,6 +89,14 @@ public class MovieController {
 				.body(response);
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param movie
+	 * @return ResponseEntity<APISuccessResponseDTO>
+	 * @throws ServiceException
+	 * 
+	 * Put API to update movie details
+	 */
 	@PutMapping
 	public ResponseEntity<APISuccessResponseDTO> updateMovie(@RequestBody Movie movie) throws ServiceException {
 		logger.info("Update movie details");
@@ -76,6 +107,14 @@ public class MovieController {
 				.body(response);
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param movieId
+	 * @return ResponseEntity<APISuccessResponseDTO>
+	 * @throws ServiceException
+	 * 
+	 * Delete API to delete movie details
+	 */
 	@DeleteMapping("/{movieId}")
 	public ResponseEntity<APISuccessResponseDTO> deleteMovie(@PathVariable int movieId) throws ServiceException {
 		logger.info("Delete movie by id");
@@ -86,6 +125,14 @@ public class MovieController {
 				.body(response);
 	}
 	
+	/**
+	 * @author Mahendran Dayalan
+	 * @param object
+	 * @param message
+	 * @return APISuccessResponseDTO
+	 * 
+	 * create response using object and message
+	 */
 	private APISuccessResponseDTO createResponse(Object object,String message) {
 		APISuccessResponseDTO response = new APISuccessResponseDTO();
 		response.setHttpStatus(HttpStatus.ACCEPTED);

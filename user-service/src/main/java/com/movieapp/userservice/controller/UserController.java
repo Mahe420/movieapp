@@ -51,6 +51,15 @@ public class UserController {
 
 	private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param userDTO
+	 * @param bindingResult
+	 * @return ResponseEntity<APISuccessResponseDTO>
+	 * @throws ApplicationException
+	 * 
+	 * Post API to add new users
+	 */
 	@PostMapping("/signup")
 	public ResponseEntity<APISuccessResponseDTO> addUser(@Valid @RequestBody UserDTO userDTO,
 			BindingResult bindingResult) throws ApplicationException {
@@ -79,6 +88,13 @@ public class UserController {
 				.body(response);
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @return ResponseEntity<APISuccessResponseDTO>
+	 * @throws ApplicationException'
+	 * 
+	 * Get API to retreive all users 
+	 */
 	@GetMapping
 	@PreAuthorize(" hasRole('ROLE_ADMIN')")
 	public ResponseEntity<APISuccessResponseDTO> getAllUser() throws ApplicationException {
@@ -90,6 +106,14 @@ public class UserController {
 				.body(response);
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param userId
+	 * @return ResponseEntity<APISuccessResponseDTO>
+	 * @throws ApplicationException
+	 * 
+	 * Get API to get user based on the id
+	 */
 	@GetMapping("/{userId}")
 	@PreAuthorize("  hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 	public ResponseEntity<APISuccessResponseDTO> getUserById(@PathVariable int userId) throws ApplicationException {
@@ -101,6 +125,14 @@ public class UserController {
 				.body(response);
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param user
+	 * @return ResponseEntity<APISuccessResponseDTO>
+	 * @throws ServiceException
+	 * 
+	 * Put API to update user details
+	 */
 	@PutMapping
 	@PreAuthorize(" hasRole('ROLE_USER')")
 	public ResponseEntity<APISuccessResponseDTO> updateUser(@RequestBody User user) throws ServiceException {
@@ -112,6 +144,14 @@ public class UserController {
 				.body(response);
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param userId
+	 * @return ResponseEntity<APISuccessResponseDTO>
+	 * @throws ServiceException
+	 * 
+	 * Delete API to delete users in database
+	 */
 	@DeleteMapping("/{userId}")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<APISuccessResponseDTO> deleteUser(@PathVariable int userId) throws ServiceException {
@@ -127,6 +167,14 @@ public class UserController {
 	}
 
 	
+	/**
+	 * @author Mahendran Dayalan
+	 * @param object
+	 * @param message
+	 * @return APISuccessResponseDTO
+	 * 
+	 * Create response by object and message
+	 */
 	private APISuccessResponseDTO createResponse(Object object,String message) {
 		APISuccessResponseDTO response = new APISuccessResponseDTO();
 		response.setHttpStatus(HttpStatus.ACCEPTED);

@@ -30,6 +30,13 @@ public class MovieServiceImpl implements MovieService {
 	GenreRepository genreRepository;
 
 	public static final String ERROR_CONNECT="Failed to connect";
+	/**
+	 * @author Mahendran Dayalan
+	 * @param movie
+	 * @return Movie
+	 * @throws ServiceException
+	 * Add movie to the database
+	 */
 	@Override
 	public Movie addMovie(Movie movie) throws ServiceException {
 		try {
@@ -55,6 +62,13 @@ public class MovieServiceImpl implements MovieService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @return List<Movie>
+	 * @throws ApplicationException
+	 * 
+	 * Retrieve all movie details
+	 */
 	@Override
 	public List<Movie> getAllMovies() throws ApplicationException{
 		try {
@@ -68,6 +82,14 @@ public class MovieServiceImpl implements MovieService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param movie
+	 * @return Movie
+	 * @throws ServiceException
+	 * 
+	 * Update a particular movie detail
+	 */
 	@Override
 	public Movie updateMovie(Movie movie) throws ServiceException {
 		try {
@@ -87,6 +109,13 @@ public class MovieServiceImpl implements MovieService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param movieId
+	 * @throws ServiceException
+	 * 
+	 * Delete movie details based on movie Id
+	 */
 	@Override
 	public void deleteMovie(int movieId) throws ServiceException {
 		try {
@@ -96,6 +125,14 @@ public class MovieServiceImpl implements MovieService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param movieId
+	 * @return Movie
+	 * @throws ApplicationException
+	 * 
+	 * Get movie details based on id
+	 */
 	@Override
 	public Movie getMovieById(int movieId) throws ApplicationException {
 		try {

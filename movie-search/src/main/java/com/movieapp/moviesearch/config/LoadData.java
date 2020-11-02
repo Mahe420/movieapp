@@ -41,6 +41,12 @@ public class LoadData {
 	@Autowired
 	private PlayDataRepository playDataRepository;
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @throws ApplicationException
+	 * 
+	 * Load data from database into elastic search
+	 */
 	@PostConstruct
 	@Transactional
 	public void loadAll() throws ApplicationException {

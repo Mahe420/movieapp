@@ -16,6 +16,11 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import com.movieapp.notificationservice.dto.Booking;
 
+/**
+ * @author Mahendran Dayalan
+ * 
+ * Kafka Consumer configuration
+ */
 @EnableKafka
 @Configuration
 public class KafkaConsumerConfig {

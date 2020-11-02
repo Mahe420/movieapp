@@ -16,6 +16,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+/**
+ * @author Mahendran Dayalan
+ *
+ * Authorization server configuration
+ */
 @Configuration
 public class AuthorizationServerConfiguration implements AuthorizationServerConfigurer {
 

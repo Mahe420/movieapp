@@ -31,6 +31,14 @@ public class PlayServiceImpl implements PlayService {
 	@Autowired
 	MovieRepository movieRepository;
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param play
+	 * @return Play
+	 * @throws ServiceException
+	 * 
+	 * Add play details to database
+	 */
 	@Override
 	public Play addPlay(Play play) throws ServiceException {
 		try {
@@ -44,6 +52,14 @@ public class PlayServiceImpl implements PlayService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @return List<Play>
+	 * @throws ApplicationException
+	 * 
+	 * Get all play details present in database
+	 */
+	
 	@Override
 	public List<Play> getAllPlay() throws ApplicationException {
 		try {
@@ -57,6 +73,14 @@ public class PlayServiceImpl implements PlayService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param play
+	 * @return Play
+	 * @throws ServiceException
+	 * 
+	 * Update a play detail present in database
+	 */
 	@Override
 	public Play updatePlay(Play play) throws ServiceException {
 		try {
@@ -70,6 +94,13 @@ public class PlayServiceImpl implements PlayService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param playId
+	 * @throws ServiceException
+	 * 
+	 * delete play using id
+	 */
 	@Override
 	public void deletePlay(int playId) throws ServiceException {
 		try {
@@ -79,6 +110,14 @@ public class PlayServiceImpl implements PlayService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param playId
+	 * @return Play
+	 * @throws ApplicationException
+	 * 
+	 * get play detail using play id
+	 */
 	@Override
 	public Play getPlayById(int playId) throws ApplicationException {
 		try {

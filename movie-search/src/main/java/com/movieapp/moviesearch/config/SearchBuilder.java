@@ -12,6 +12,11 @@ import org.springframework.stereotype.Component;
 
 import com.movieapp.moviesearch.model.PlayData;
 
+/**
+ * @author Mahendran Dayalan
+ *
+ *Search Builder Configuration
+ */
 @Component
 public class SearchBuilder {
 
