@@ -15,6 +15,10 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import com.movieapp.bookingservice.entity.Booking;
 
+/**
+ * @author Mahendran Dayalan
+ * Kafka Configuration
+ */
 @Configuration
 public class KafkaProducerConfig {
 

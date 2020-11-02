@@ -26,6 +26,7 @@ import com.movieapp.bookingservice.service.BookingService;
 
 
 
+
 @RestController
 @CrossOrigin
 @RequestMapping(value="/booking/v1")
@@ -38,6 +39,15 @@ public class BookingController {
 	
 	private static Logger logger = LoggerFactory.getLogger(BookingController.class);
 	
+	/**
+	 * @author Mahendran Dayalan
+	 * @param booking
+	 * @return
+	 * @throws ApplicationException
+	 * 
+	 * 
+	 * Post API to add Booking
+	 */
 	@PostMapping
 	public ResponseEntity<APISuccessResponseDTO> addBooking(@RequestBody Booking booking) throws ApplicationException 
 	{
@@ -51,8 +61,16 @@ public class BookingController {
 				.body(response);
 	}
 
+	
+	/**
+	 * @author Mahendran Dayalan
+	 * @return
+	 * @throws ApplicationException
+	 * 
+	 * Get API to get all booking details
+	 */
 	@GetMapping
-	public ResponseEntity<APISuccessResponseDTO> getAllBooking(HttpServletRequest req) throws ApplicationException {
+	public ResponseEntity<APISuccessResponseDTO> getAllBooking() throws ApplicationException {
 		
 		logger.info("Entered to Get all the booking details");
 		List<BookingDTO> bookingDTOList = bookingService.getAllBooking();
@@ -62,6 +80,14 @@ public class BookingController {
 				.body(response);
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param bookingId
+	 * @return
+	 * @throws ApplicationException
+	 * 
+	 * Get API to get booking details by id
+	 */
 	@GetMapping("/{bookingId}")
 	public ResponseEntity<APISuccessResponseDTO> getBookingById(@PathVariable int bookingId) throws ApplicationException  {
 		
@@ -76,6 +102,14 @@ public class BookingController {
 	}
 
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param bookingId
+	 * @return
+	 * @throws ApplicationException
+	 * 
+	 * Delete API to delete booking details
+	 */
 	@DeleteMapping("/{bookingId}")
 	public ResponseEntity<APISuccessResponseDTO> deleteBooking(@PathVariable int bookingId) throws ApplicationException {
 		logger.info("Entered to delete booking ");
@@ -88,6 +122,14 @@ public class BookingController {
 				.body(response);
 	}
 	
+	/**
+	 * @author Mahendran Dayalan
+	 * @param object
+	 * @param message
+	 * @return
+	 * 
+	 * To create Response using Object and message
+	 */
 	private APISuccessResponseDTO createResponse(Object object,String message) {
 		APISuccessResponseDTO response = new APISuccessResponseDTO();
 		response.setHttpStatus(HttpStatus.ACCEPTED);

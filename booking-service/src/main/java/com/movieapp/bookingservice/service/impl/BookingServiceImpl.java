@@ -1,7 +1,6 @@
 package com.movieapp.bookingservice.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -28,12 +27,11 @@ import com.movieapp.bookingservice.exception.ApplicationException;
 import com.movieapp.bookingservice.exception.ServiceException;
 import com.movieapp.bookingservice.repository.BookingRepository;
 import com.movieapp.bookingservice.service.BookingService;
-import com.netflix.infix.lang.infix.antlr.EventFilterParser.exists_predicate_return;
 
 @Service
 @Transactional
 public class BookingServiceImpl implements BookingService {
-
+    public static final int HTTP_OK=200;
 	public static final String ERROR_CONNECT = "Failed to connect";
 	@Value("${kafka.topic.name}")
 	private String topicName;
@@ -61,6 +59,14 @@ public class BookingServiceImpl implements BookingService {
 
 	private static Logger logger = LoggerFactory.getLogger(BookingServiceImpl.class);
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param booking
+	 * @return
+	 * @throws ApplicationException
+	 * 
+	 * To add Booking to the database
+	 */
 	@Override
 	public Booking addBooking(Booking booking) throws ApplicationException {
 		try {
@@ -94,6 +100,13 @@ public class BookingServiceImpl implements BookingService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param booking
+	 * @throws ServiceException
+	 * 
+	 * To send message to kafka topic
+	 */
 	private void sendMessage(Booking booking) throws ServiceException {
 		try {
 			kafkaTemplate.send(topicName, booking);
@@ -103,6 +116,13 @@ public class BookingServiceImpl implements BookingService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @return
+	 * @throws ApplicationException
+	 * 
+	 * Get all the booking details
+	 */
 	@Override
 	public List<BookingDTO> getAllBooking() throws ApplicationException {
 		try {
@@ -141,6 +161,14 @@ public class BookingServiceImpl implements BookingService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param bookingId
+	 * @return
+	 * @throws ApplicationException
+	 * 
+	 * Get the booking details based on ID
+	 */
 	@Override
 	public BookingDTO getBookingById(int bookingId) throws ApplicationException {
 		try {
@@ -168,6 +196,13 @@ public class BookingServiceImpl implements BookingService {
 		}
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param bookingId
+	 * @throws ApplicationException
+	 * 
+	 * Delete the booking detail using booking id
+	 */
 	@Override
 	public void deleteBooking(int bookingId) throws ApplicationException {
 
@@ -202,9 +237,16 @@ public class BookingServiceImpl implements BookingService {
 
 	}
 
+	/**
+	 * @author Mahendran Dayalan
+	 * @param response
+	 * @throws ApplicationException
+	 * 
+	 * Check the Response from other services contain success status code
+	 */
 	public static void checkStatus(APISuccessResponseDTO response) throws ApplicationException {
 		logger.info("Response from other api {}", response);
-		if (response.getStatusCode() != 200) {
+		if (response.getStatusCode() != HTTP_OK) {
 			logger.error("Error in calling other service");
 			throw new ApplicationException("Error in calling service message:" + response.getBody());
 		}
