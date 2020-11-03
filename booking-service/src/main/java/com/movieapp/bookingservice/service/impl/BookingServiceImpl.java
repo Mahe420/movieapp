@@ -244,7 +244,7 @@ public class BookingServiceImpl implements BookingService {
 	 * 
 	 * Check the Response from other services contain success status code
 	 */
-	public static void checkStatus(APISuccessResponseDTO response) throws ApplicationException {
+	private void checkStatus(APISuccessResponseDTO response) throws ApplicationException {
 		logger.info("Response from other api {}", response);
 		if (response.getStatusCode() != HTTP_OK) {
 			logger.error("Error in calling other service");

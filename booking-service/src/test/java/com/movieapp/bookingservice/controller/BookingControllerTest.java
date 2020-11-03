@@ -48,7 +48,7 @@ import com.movieapp.bookingservice.service.impl.BookingServiceImpl;
 public class BookingControllerTest {
 
 	@Autowired
-	BookingService movieService;
+	BookingService bookingService;
 
 	@MockBean
 	OAuth2RestTemplate restTemplate;
@@ -95,7 +95,6 @@ public class BookingControllerTest {
 		Mockito.when(bookingRepository.findById(Mockito.any())).thenReturn(Optional.of(getBooking()));
 
 		MvcResult result = mockMvc.perform(delete("/booking/v1/1")).andReturn();
-		System.out.println(result.toString());
 		assertTrue(result.getResponse().getContentAsString().contains("Booking Deleted Successfull"));
 	}
 
@@ -178,29 +177,6 @@ public class BookingControllerTest {
 
 	}
 	
-	@Test
-	public void getBookingRunTimeExp() throws Exception {
-		List list = new ArrayList();
-		list.add(getBooking());
-		Mockito.when(bookingRepository.findAll()).thenReturn(list);
-		APISuccessResponseDTO api = new APISuccessResponseDTO();
-		List list1 = new ArrayList();
-		api.setBody(list);
-		api.setStatusCode(200);
-		Mockito.when(restTemplate.exchange(ArgumentMatchers.matches("http://USER-SERVICE/users/v1/"),
-				Matchers.eq(HttpMethod.GET), Mockito.any(), ArgumentMatchers.any(Class.class)))
-				.thenReturn(new ResponseEntity<APISuccessResponseDTO>(api, HttpStatus.ACCEPTED));
-		List list2 = new ArrayList();
-		list2.add(play());
-		api.setBody(list);
-		api.setStatusCode(200);
-		Mockito.when(restTemplate.exchange(ArgumentMatchers.matches("http://INVENTORY-SERVICE/play/v1/"),
-				Matchers.eq(HttpMethod.GET), Mockito.any(), ArgumentMatchers.any(Class.class)))
-				.thenReturn(new ResponseEntity<APISuccessResponseDTO>(api, HttpStatus.ACCEPTED));
-		MvcResult result = this.mockMvc.perform(get("/booking/v1")).andReturn();
-		assertTrue(result.getResponse().getContentAsString().contains("Error in id of user or play"));
-
-	}
 
 	public Booking getBooking() {
 		Booking booking = new Booking();
